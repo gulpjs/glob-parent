@@ -17,5 +17,6 @@ describe('glob-parent', function() {
     assert.equal(gp('path/*(to|from)'), 'path');
     assert.equal(gp('path/@(to|from)'), 'path');
     assert.equal(gp('path/**/*'), 'path');
+    assert.equal(gp('path/**/subdir/foo.*'), 'path');
   });
 });
