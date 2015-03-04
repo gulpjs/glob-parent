@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/es128/glob-parent",
   "dependencies": {
-    "is-glob": "^0.3.0"
+    "is-glob": "^1.1.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
