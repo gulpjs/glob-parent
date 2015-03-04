@@ -1,6 +1,6 @@
 {
   "name": "glob-parent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Strips glob magic from a string to provide the parent path",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,8 @@
     "parent",
     "strip",
     "path",
-    "directory"
+    "directory",
+    "base"
   ],
   "author": "Elan Shanker",
   "license": "ISC",
