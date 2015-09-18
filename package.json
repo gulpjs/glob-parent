@@ -1,6 +1,6 @@
 {
   "name": "glob-parent",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Strips glob magic from a string to provide the parent path",
   "main": "index.js",
   "scripts": {
