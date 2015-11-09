@@ -26,3 +26,41 @@ describe('glob-parent', function() {
     assert.equal(gp('path/foo'), 'path');
   });
 });
+
+describe('glob2base test patterns', function() {
+  it('should get a base name', function() {
+    assert.equal(gp('js/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from a nested glob', function() {
+    assert.equal(gp('js/**/test/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from a flat file', function() {
+    assert.equal(gp('js/test/wow.js') + '/', 'js/test/');
+  });
+
+  it('should get a base name from character class pattern', function() {
+    assert.equal(gp('js/t[a-z]st}/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from brace , expansion', function() {
+    assert.equal(gp('js/{src,test}/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from brace .. expansion', function() {
+    assert.equal(gp('js/test{0..9}/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from extglob', function() {
+    assert.equal(gp('js/t+(wo|est)/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from a complex brace glob', function() {
+    assert.equal(gp('lib/{components,pages}/**/{test,another}/*.txt') + '/', 'lib/');
+
+    assert.equal(gp('js/test/**/{images,components}/*.js') + '/', 'js/test/');
+
+    assert.equal(gp('ooga/{booga,sooga}/**/dooga/{eooga,fooga}') + '/', 'ooga/');
+  });
+});
