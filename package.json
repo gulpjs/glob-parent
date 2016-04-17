@@ -24,9 +24,7 @@
     "url": "https://github.com/es128/glob-parent/issues"
   },
   "homepage": "https://github.com/es128/glob-parent",
-  "dependencies": {
-    "is-glob": "^2.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.5",
