@@ -1,7 +1,7 @@
 {
   "name": "glob-parent",
   "version": "3.0.0",
-  "description": "Strips glob magic from a string to provide the parent path",
+  "description": "Strips glob magic from a string to provide the parent directory path",
   "main": "index.js",
   "scripts": {
     "test": "istanbul test node_modules/mocha/bin/_mocha",
@@ -16,10 +16,12 @@
     "parent",
     "strip",
     "path",
+    "dirname",
     "directory",
-    "base"
+    "base",
+    "wildcard"
   ],
-  "author": "Elan Shanker",
+  "author": "Elan Shanker (https://github.com/es128)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/es128/glob-parent/issues"
