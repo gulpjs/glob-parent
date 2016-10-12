@@ -10,7 +10,9 @@ describe('glob-parent', function() {
     assert.equal(gp('/*.js'), '/');
     assert.equal(gp('*.js'), '.');
     assert.equal(gp('**/*.js'), '.');
+    assert.equal(gp('path/[a-z]'), 'path');
     assert.equal(gp('path/{to,from}'), 'path');
+    assert.equal(gp('path/(to|from)'), 'path');
     assert.equal(gp('path/!(to|from)'), 'path');
     assert.equal(gp('path/?(to|from)'), 'path');
     assert.equal(gp('path/+(to|from)'), 'path');
@@ -54,6 +56,11 @@ describe('glob2base test patterns', function() {
 
   it('should get a base name from extglob', function() {
     assert.equal(gp('js/t+(wo|est)/*.js') + '/', 'js/');
+  });
+
+  it('should get a base name from a path with non-exglob parens', function() {
+    assert.equal(gp('js/t(wo|est)/*.js'), 'js');
+    assert.equal(gp('js/t/(wo|est)/*.js'), 'js/t');
   });
 
   it('should get a base name from a complex brace glob', function() {
