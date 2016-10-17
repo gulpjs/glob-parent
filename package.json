@@ -4,7 +4,8 @@
   "description": "Strips glob magic from a string to provide the parent path",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
+    "test": "istanbul test node_modules/mocha/bin/_mocha",
+    "ci-test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
