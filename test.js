@@ -73,6 +73,10 @@ describe('glob-parent', function() {
   it('should respect glob enclosures with embedded separators', function() {
     assert.equal(gp('path/{,/,bar/baz,qux}/'), 'path');
     assert.equal(gp('path/\\{,/,bar/baz,qux\\}/'), 'path/{,/,bar/baz,qux}');
+    assert.equal(gp('/{,/,bar/baz,qux}/'), '/');
+    assert.equal(gp('/\\{,/,bar/baz,qux}/'), '/{,/,bar/baz,qux}');
+    assert.equal(gp('{,/,bar/baz,qux}'), '.');
+    assert.equal(gp('\\{,/,bar/baz,qux\\}'), '{,/,bar/baz,qux}');
     assert.equal(gp('path/foo[a\\\/]/'), 'path');
     assert.equal(gp('path/foo\\[a\\\/]/'), 'path/foo[a\\\/]');
   });
