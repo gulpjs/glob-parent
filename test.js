@@ -60,14 +60,14 @@ describe('glob-parent', function() {
   });
 
   it('should respect escaped characters', function() {
-    assert.equal(gp('path/\\*\\*/subdir/foo.*'), 'path/\\*\\*/subdir');
-    assert.equal(gp('path/\\[\\*\\]/subdir/foo.*'), 'path/\\[\\*\\]/subdir');
+    assert.equal(gp('path/\\*\\*/subdir/foo.*'), 'path/**/subdir');
+    assert.equal(gp('path/\\[\\*\\]/subdir/foo.*'), 'path/[*]/subdir');
     assert.equal(gp('path/\\*(a|b)/subdir/foo.*'), 'path');
-    assert.equal(gp('path/\\*/(a|b)/subdir/foo.*'), 'path/\\*');
-    assert.equal(gp('path/\\*\\(a\\|b\\)/subdir/foo.*'), 'path/\\*\\(a\\|b\\)/subdir');
-    assert.equal(gp('path/\\[foo bar\\]/subdir/foo.*'), 'path/\\[foo bar\\]/subdir');
-    assert.equal(gp('path/\\[bar]/'), 'path/\\[bar]');
-    assert.equal(gp('path/foo \\[bar]/'), 'path/foo \\[bar]');
+    assert.equal(gp('path/\\*/(a|b)/subdir/foo.*'), 'path/*');
+    assert.equal(gp('path/\\*\\(a\\|b\\)/subdir/foo.*'), 'path/*(a|b)/subdir');
+    assert.equal(gp('path/\\[foo bar\\]/subdir/foo.*'), 'path/[foo bar]/subdir');
+    assert.equal(gp('path/\\[bar]/'), 'path/[bar]');
+    assert.equal(gp('path/foo \\[bar]/'), 'path/foo [bar]');
   });
 
   it('should return parent dirname from non-glob paths', function() {
