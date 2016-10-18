@@ -53,7 +53,7 @@ The following characters have special significance in glob patterns and must be 
 
 ```js
 globParent('foo/[bar]/') // 'foo'
-globParent('foo/\\[bar]/') // 'foo/\\[bar]'
+globParent('foo/\\[bar]/') // 'foo/[bar]'
 ```
 
 Change Log
