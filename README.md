@@ -41,6 +41,11 @@ The following characters have special significance in glob patterns and must be 
 
 - `?` (question mark)
 - `*` (star)
+- `|` (pipe)
+- `(` (opening parenthese)
+- `)` (closing parenthese)
+- `{` (opening curly brace)
+- `}` (closing curly brace)
 - `[` (opening bracket)
 - `]` (closing bracket)
 
