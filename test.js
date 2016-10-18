@@ -70,6 +70,13 @@ describe('glob-parent', function() {
     assert.equal(gp('path/foo \\[bar]/'), 'path/foo [bar]');
   });
 
+  it('should respect glob enclosures with embedded separators', function() {
+    assert.equal(gp('path/{,/,bar/baz,qux}/'), 'path');
+    assert.equal(gp('path/\\{,/,bar/baz,qux\\}/'), 'path/{,/,bar/baz,qux}');
+    assert.equal(gp('path/foo[a\\\/]/'), 'path');
+    assert.equal(gp('path/foo\\[a\\\/]/'), 'path/foo[a\\\/]');
+  });
+
   it('should return parent dirname from non-glob paths', function() {
     assert.equal(gp('path'), '.');
     assert.equal(gp('path/foo'), 'path');
