@@ -7,7 +7,7 @@ var pathDirname = require('path-dirname');
 module.exports = function globParent(str) {
 	// replace braces/brackets sections with *
 	str = str.replace(/(^|[^\\])(\{([^{}]*?)}|\[([^\[\]]*?)\])/g, '$1*');
-	if (/[\}\}]$/.test(str)) str += '/';
+	if (/[\}\]]$/.test(str)) str += '/';
 
 	// preserves full path in case of trailing path separator
 	str += 'a';
