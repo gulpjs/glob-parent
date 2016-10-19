@@ -79,6 +79,8 @@ describe('glob-parent', function() {
     assert.equal(gp('\\{,/,bar/baz,qux\\}'), '{,/,bar/baz,qux}');
     assert.equal(gp('path/foo[a\\\/]/'), 'path');
     assert.equal(gp('path/foo\\[a\\\/]/'), 'path/foo[a\\\/]');
+    assert.equal(gp('foo[a\\\/]'), '.');
+    assert.equal(gp('foo\\[a\\\/]'), 'foo[a\\\/]');
   });
 
   it('should return parent dirname from non-glob paths', function() {
