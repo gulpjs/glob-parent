@@ -13,7 +13,7 @@ module.exports = function globParent(str) {
 
 	// remove path parts that are globby
 	do {str = pathDirname.posix(str)}
-	while (isglob(str) || /(^|[^\\])[\{\[]/.test(str));
+	while (isglob(str) || /(^|[^\\])([\{\[]|\([^\)]+$)/.test(str));
 
 	// remove escape chars and return result
 	return str.replace(/\\([\*\?\|\[\]\(\)\{\}])/g, '$1');

@@ -94,6 +94,9 @@ describe('glob-parent', function() {
     assert.equal(gp('path/foo\\[a\\\/]/'), 'path/foo[a\\\/]');
     assert.equal(gp('foo[a\\\/]'), '.');
     assert.equal(gp('foo\\[a\\\/]'), 'foo[a\\\/]');
+    assert.equal(gp('path/(foo/bar|baz)'), 'path');
+    assert.equal(gp('path/(foo/bar|baz)/'), 'path');
+    assert.equal(gp('path/\\(foo/bar|baz)/'), 'path/(foo/bar|baz)');
   });
 
   it('should handle nested braces', function() {
