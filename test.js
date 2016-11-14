@@ -30,6 +30,7 @@ describe('glob-parent', function() {
     assert.equal(gp('/(a|b)'), '/');
     assert.equal(gp('./(a|b)'), '.');
     assert.equal(gp('a/(b c)'), 'a', 'not an extglob');
+    assert.equal(gp('a/(b c)/'), 'a/(b c)', 'not an extglob');
     assert.equal(gp('a/(b c)/d'), 'a/(b c)', 'not an extglob');
     assert.equal(gp('path/to/*.js'), 'path/to');
     assert.equal(gp('/root/path/to/*.js'), '/root/path/to');
