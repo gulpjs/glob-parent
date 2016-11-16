@@ -2,6 +2,7 @@
 
 var gp = require('./');
 var assert = require('assert');
+var isWin32 = require('os').platform() === 'win32';
 
 describe('glob-parent', function() {
   it('should strip glob magic to return parent path', function() {
@@ -73,13 +74,20 @@ describe('glob-parent', function() {
     assert.equal(gp('path/\\[bar]'), 'path/[bar]');
     assert.equal(gp('[bar]'), '.');
     assert.equal(gp('[bar]/'), '.');
-    assert.equal(gp('\\[bar]'), '[bar]');
-    assert.equal(gp('[bar\\]'), '.');
+    assert.equal(gp('./\\[bar]'), './[bar]');
+    assert.equal(gp('\\[bar]/'), '[bar]');
+    assert.equal(gp('[bar\\]/'), '.');
     assert.equal(gp('path/foo \\[bar]/'), 'path/foo [bar]');
     assert.equal(gp('path/\\{foo,bar}/'), 'path/{foo,bar}');
     assert.equal(gp('\\{foo,bar}/'), '{foo,bar}');
-    assert.equal(gp('\\{foo,bar\\}'), '{foo,bar}');
-    assert.equal(gp('{foo,bar\\}'), '.');
+    assert.equal(gp('\\{foo,bar\\}/'), '{foo,bar}');
+    assert.equal(gp('{foo,bar\\}/'), '.');
+    if (!isWin32) {
+      assert.equal(gp('\\[bar]'), '[bar]');
+      assert.equal(gp('[bar\\]'), '.');
+      assert.equal(gp('\\{foo,bar\\}'), '{foo,bar}');
+      assert.equal(gp('{foo,bar\\}'), '.');
+    }
   });
 
   it('should respect glob enclosures with embedded separators', function() {
@@ -163,7 +171,7 @@ describe('glob2base test patterns', function() {
   });
 });
 
-if (require('os').platform() === 'win32') {
+if (isWin32) {
   describe('technically invalid windows globs', function() {
     it('should manage simple globs with backslash path separator', function() {
       assert.equal(gp('C:\\path\\*.js'), 'C:/path')
