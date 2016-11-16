@@ -162,3 +162,11 @@ describe('glob2base test patterns', function() {
     assert.equal(gp('ooga/{booga,sooga}/**/dooga/{eooga,fooga}'), 'ooga');
   });
 });
+
+if (require('os').platform() === 'win32') {
+  describe('technically invalid windows globs', function() {
+    it('should manage simple globs with backslash path separator', function() {
+      assert.equal(gp('C:\\path\\*.js'), 'C:/path')
+    });
+  });
+}
