@@ -30,11 +30,13 @@ describe('glob-parent', function() {
     assert.equal(gp('/(a|b)'), '/');
     assert.equal(gp('./(a|b)'), '.');
     assert.equal(gp('a/(b c)'), 'a', 'not an extglob');
+    assert.equal(gp('a/(b c)/'), 'a/(b c)', 'not an extglob');
     assert.equal(gp('a/(b c)/d'), 'a/(b c)', 'not an extglob');
     assert.equal(gp('path/to/*.js'), 'path/to');
     assert.equal(gp('/root/path/to/*.js'), '/root/path/to');
     assert.equal(gp('chapter/foo [bar]/'), 'chapter');
     assert.equal(gp('path/[a-z]'), 'path');
+    assert.equal(gp('[a-z]'), '.');
     assert.equal(gp('path/{to,from}'), 'path');
     assert.equal(gp('path/(to|from)'), 'path');
     assert.equal(gp('path/(foo bar)/subdir/foo.*'), 'path/(foo bar)/subdir');
@@ -57,6 +59,7 @@ describe('glob-parent', function() {
     assert.equal(gp('path/**/subdir/foo.*'), 'path');
     assert.equal(gp('path/subdir/**/foo.js'), 'path/subdir');
     assert.equal(gp('path/!subdir/foo.js'), 'path/!subdir');
+    assert.equal(gp('path/{foo,bar}/'), 'path');
   });
 
   it('should respect escaped characters', function() {
@@ -67,7 +70,45 @@ describe('glob-parent', function() {
     assert.equal(gp('path/\\*\\(a\\|b\\)/subdir/foo.*'), 'path/*(a|b)/subdir');
     assert.equal(gp('path/\\[foo bar\\]/subdir/foo.*'), 'path/[foo bar]/subdir');
     assert.equal(gp('path/\\[bar]/'), 'path/[bar]');
+    assert.equal(gp('path/\\[bar]'), 'path/[bar]');
+    assert.equal(gp('[bar]'), '.');
+    assert.equal(gp('[bar]/'), '.');
+    assert.equal(gp('\\[bar]'), '[bar]');
+    assert.equal(gp('[bar\\]'), '.');
     assert.equal(gp('path/foo \\[bar]/'), 'path/foo [bar]');
+    assert.equal(gp('path/\\{foo,bar}/'), 'path/{foo,bar}');
+    assert.equal(gp('\\{foo,bar}/'), '{foo,bar}');
+    assert.equal(gp('\\{foo,bar\\}'), '{foo,bar}');
+    assert.equal(gp('{foo,bar\\}'), '.');
+  });
+
+  it('should respect glob enclosures with embedded separators', function() {
+    assert.equal(gp('path/{,/,bar/baz,qux}/'), 'path');
+    assert.equal(gp('path/\\{,/,bar/baz,qux}/'), 'path/{,/,bar/baz,qux}');
+    assert.equal(gp('path/\\{,/,bar/baz,qux\\}/'), 'path/{,/,bar/baz,qux}');
+    assert.equal(gp('/{,/,bar/baz,qux}/'), '/');
+    assert.equal(gp('/\\{,/,bar/baz,qux}/'), '/{,/,bar/baz,qux}');
+    assert.equal(gp('{,/,bar/baz,qux}'), '.');
+    assert.equal(gp('\\{,/,bar/baz,qux\\}'), '{,/,bar/baz,qux}');
+    assert.equal(gp('\\{,/,bar/baz,qux}/'), '{,/,bar/baz,qux}');
+    assert.equal(gp('path/foo[a\\\/]/'), 'path');
+    assert.equal(gp('path/foo\\[a\\\/]/'), 'path/foo[a\\\/]');
+    assert.equal(gp('foo[a\\\/]'), '.');
+    assert.equal(gp('foo\\[a\\\/]'), 'foo[a\\\/]');
+    assert.equal(gp('path/(foo/bar|baz)'), 'path');
+    assert.equal(gp('path/(foo/bar|baz)/'), 'path');
+    assert.equal(gp('path/\\(foo/bar|baz)/'), 'path/(foo/bar|baz)');
+  });
+
+  it('should handle nested braces', function() {
+    assert.equal(gp('path/{../,./,{bar,/baz\\},qux\\}/'), 'path');
+    assert.equal(gp('path/{../,./,\\{bar,/baz},qux}/'), 'path');
+    assert.equal(gp('path/\\{../,./,\\{bar,/baz\\},qux\\}/'), 'path/{../,./,{bar,/baz},qux}');
+    assert.equal(gp('{../,./,{bar,/baz\\},qux\\}/'), '.');
+    assert.equal(gp('{../,./,{bar,/baz\\},qux\\}'), '.');
+    assert.equal(gp('path/{,/,bar/{baz,qux\\}}/'), 'path');
+    assert.equal(gp('path/{,/,bar/{baz,qux}\\}/'), 'path');
+    //assert.equal(gp('path/\\{../,./,{bar,/baz},qux}/'), 'path');
   });
 
   it('should return parent dirname from non-glob paths', function() {

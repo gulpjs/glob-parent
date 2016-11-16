@@ -56,6 +56,22 @@ globParent('foo/[bar]/') // 'foo'
 globParent('foo/\\[bar]/') // 'foo/[bar]'
 ```
 
+## Limitations
+
+#### Braces & Brackets
+This library attempts a quick and imperfect method of determining which path
+parts have glob magic without fully parsing/lexing the pattern. There are some
+advanced use cases that can trip it up, such as nested braces where the outer
+pair is escaped and the inner one contains a path separator. If you find
+yourself in the unlikely circumstance of being affected by this or need to
+ensure higher-fidelity glob handling in your library, it is recommended that you
+pre-process your input with [expand-braces] and/or [expand-brackets].
+
+#### Windows
+Backslashes are not valid path separators for globs. Please ensure paths are
+provided with forward-slashes only.
+
+
 Change Log
 ----------
 [See release notes page on GitHub](https://github.com/es128/glob-parent/releases)
@@ -63,3 +79,6 @@ Change Log
 License
 -------
 [ISC](https://raw.github.com/es128/glob-parent/master/LICENSE)
+
+[expand-braces]: https://github.com/jonschlinkert/expand-braces
+[expand-brackets]: https://github.com/jonschlinkert/expand-brackets
