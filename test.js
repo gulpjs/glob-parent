@@ -1,9 +1,7 @@
 'use strict';
-
 var gp = require('./');
 var assert = require('assert');
 var isWin32 = require('os').platform() === 'win32';
-
 describe('glob-parent', function() {
   it('should strip glob magic to return parent path', function() {
     assert.equal(gp('.'), '.');
@@ -62,7 +60,6 @@ describe('glob-parent', function() {
     assert.equal(gp('path/!subdir/foo.js'), 'path/!subdir');
     assert.equal(gp('path/{foo,bar}/'), 'path');
   });
-
   it('should respect escaped characters', function() {
     assert.equal(gp('path/\\*\\*/subdir/foo.*'), 'path/**/subdir');
     assert.equal(gp('path/\\[\\*\\]/subdir/foo.*'), 'path/[*]/subdir');
@@ -89,7 +86,6 @@ describe('glob-parent', function() {
       assert.equal(gp('{foo,bar\\}'), '.');
     }
   });
-
   it('should respect glob enclosures with embedded separators', function() {
     assert.equal(gp('path/{,/,bar/baz,qux}/'), 'path');
     assert.equal(gp('path/\\{,/,bar/baz,qux}/'), 'path/{,/,bar/baz,qux}');
@@ -107,7 +103,6 @@ describe('glob-parent', function() {
     assert.equal(gp('path/(foo/bar|baz)/'), 'path');
     assert.equal(gp('path/\\(foo/bar|baz)/'), 'path/(foo/bar|baz)');
   });
-
   it('should handle nested braces', function() {
     assert.equal(gp('path/{../,./,{bar,/baz\\},qux\\}/'), 'path');
     assert.equal(gp('path/{../,./,\\{bar,/baz},qux}/'), 'path');
@@ -118,7 +113,6 @@ describe('glob-parent', function() {
     assert.equal(gp('path/{,/,bar/{baz,qux}\\}/'), 'path');
     //assert.equal(gp('path/\\{../,./,{bar,/baz},qux}/'), 'path');
   });
-
   it('should return parent dirname from non-glob paths', function() {
     assert.equal(gp('path'), '.');
     assert.equal(gp('path/foo'), 'path');
@@ -126,51 +120,39 @@ describe('glob-parent', function() {
     assert.equal(gp('path/foo/bar.js'), 'path/foo');
   });
 });
-
 describe('glob2base test patterns', function() {
   it('should get a base name', function() {
     assert.equal(gp('js/*.js'), 'js');
   });
-
   it('should get a base name from a nested glob', function() {
     assert.equal(gp('js/**/test/*.js'), 'js');
   });
-
   it('should get a base name from a flat file', function() {
     assert.equal(gp('js/test/wow.js'), 'js/test');
     assert.equal(gp('js/test/wow.js'), 'js/test');
   });
-
   it('should get a base name from character class pattern', function() {
     assert.equal(gp('js/t[a-z]st}/*.js'), 'js');
   });
-
   it('should get a base name from brace , expansion', function() {
     assert.equal(gp('js/{src,test}/*.js'), 'js');
   });
-
   it('should get a base name from brace .. expansion', function() {
     assert.equal(gp('js/test{0..9}/*.js'), 'js');
   });
-
   it('should get a base name from extglob', function() {
     assert.equal(gp('js/t+(wo|est)/*.js'), 'js');
   });
-
   it('should get a base name from a path with non-exglob parens', function() {
     assert.equal(gp('js/t(wo|est)/*.js'), 'js');
     assert.equal(gp('js/t/(wo|est)/*.js'), 'js/t');
   });
-
   it('should get a base name from a complex brace glob', function() {
     assert.equal(gp('lib/{components,pages}/**/{test,another}/*.txt'), 'lib');
-
     assert.equal(gp('js/test/**/{images,components}/*.js'), 'js/test');
-
     assert.equal(gp('ooga/{booga,sooga}/**/dooga/{eooga,fooga}'), 'ooga');
   });
 });
-
 if (isWin32) {
   describe('technically invalid windows globs', function() {
     it('should manage simple globs with backslash path separator', function() {
