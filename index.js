@@ -1,24 +1,29 @@
 'use strict';
 
-var path = require('path');
-var isglob = require('is-glob');
-var pathDirname = require('path-dirname');
+var dirname = require('path').posix.dirname;
+var isGlob = require('is-glob');
 var isWin32 = require('os').platform() === 'win32';
+
+var slash = '/';
+var enclosure = /[\{\[].*[\/]*.*[\}\]]$/;
+var globby = /(^|[^\\])([\{\[]|\([^\)]+$)/;
+var escaped = /\\([\*\?\|\[\]\(\)\{\}])/g;
 
 module.exports = function globParent(str) {
 	// flip windows path separators
-	if (isWin32 && str.indexOf('/') < 0) str = str.split('\\').join('/');
+	if (isWin32 && str.indexOf(slash) < 0) str = str.replace(/\\/g, '/');
 
 	// special case for strings ending in enclosure containing path separator
-	if (/[\{\[].*[\/]*.*[\}\]]$/.test(str)) str += '/';
+	if (enclosure.test(str)) str += slash;
 
 	// preserves full path in case of trailing path separator
 	str += 'a';
 
 	// remove path parts that are globby
-	do {str = pathDirname.posix(str)}
-	while (isglob(str) || /(^|[^\\])([\{\[]|\([^\)]+$)/.test(str));
+	do {
+		str = dirname(str)
+	} while (isGlob(str) || globby.test(str));
 
 	// remove escape chars and return result
-	return str.replace(/\\([\*\?\|\[\]\(\)\{\}])/g, '$1');
+	return str.replace(escaped, '$1');
 };
