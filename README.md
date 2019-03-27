@@ -44,7 +44,7 @@ Takes a string and returns the part of the path before the glob begins. Be aware
 
 The following characters have special significance in glob patterns and must be escaped if you want them to be treated as regular path characters:
 
-- `?` (question mark)
+- `?` (question mark) unless used as a path segment alone
 - `*` (asterisk)
 - `|` (pipe)
 - `(` (opening parenthesis)
