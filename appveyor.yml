@@ -1,27 +1,26 @@
+# https://www.appveyor.com/docs/appveyor-yml
+# https://www.appveyor.com/docs/lang/nodejs-iojs
 
-# Test against this version of Node.js
 environment:
   matrix:
-    - nodejs_version: "7"
-    - nodejs_version: "6"
-    - nodejs_version: "5"
-    - nodejs_version: "4"
+    # node.js
     - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
+    - nodejs_version: "4"
+    - nodejs_version: "6"
+    - nodejs_version: "8"
+    - nodejs_version: "10"
 
-# Install scripts. (runs after repo cloning)
 install:
-  # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
-  # install modules
   - npm install
 
-# Post-install test scripts.
 test_script:
-  # Output useful info for debugging.
   - node --version
   - npm --version
-  # run tests
-  - npm test
+  - cmd: npm test
 
-# Don't actually build.
 build: off
+
+# build version format
+version: "{build}"
