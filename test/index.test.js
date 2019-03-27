@@ -47,12 +47,12 @@ describe('glob-parent', function() {
     assert.equal(gp('path/*(to|from)'), 'path');
     assert.equal(gp('path/@(to|from)'), 'path');
     assert.equal(gp('path/!/foo'), 'path/!');
-    assert.equal(gp('path/?/foo'), 'path', 'qmarks must be escaped');
+    assert.equal(gp('path/?/foo'), 'path/?');
     assert.equal(gp('path/+/foo'), 'path/+');
     assert.equal(gp('path/*/foo'), 'path');
     assert.equal(gp('path/@/foo'), 'path/@');
     assert.equal(gp('path/!/foo/'), 'path/!/foo');
-    assert.equal(gp('path/?/foo/'), 'path', 'qmarks must be escaped');
+    assert.equal(gp('path/?/foo/'), 'path/?/foo');
     assert.equal(gp('path/+/foo/'), 'path/+/foo');
     assert.equal(gp('path/*/foo/'), 'path');
     assert.equal(gp('path/@/foo/'), 'path/@/foo');
