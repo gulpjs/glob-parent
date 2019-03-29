@@ -10,7 +10,7 @@
   "repository": "gulpjs/glob-parent",
   "license": "ISC",
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 6"
   },
   "main": "index.js",
   "files": [
@@ -25,16 +25,15 @@
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
-    "is-glob": "^4.0.1",
-    "path-dirname": "^1.0.2"
+    "is-glob": "^4.0.1"
   },
   "devDependencies": {
     "coveralls": "github:phated/node-coveralls#2.x",
     "eslint": "^2.13.1",
     "eslint-config-gulp": "^3.0.1",
     "expect": "^1.20.2",
-    "mocha": "^3.5.3",
-    "nyc": "^10.3.2"
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0"
   },
   "keywords": [
     "glob",
