@@ -1,7 +1,7 @@
 'use strict';
 
 var isGlob = require('is-glob');
-var pathDirname = require('path-dirname');
+var pathPosixDirname = require('path').posix.dirname;
 var isWin32 = require('os').platform() === 'win32';
 
 var slash = '/';
@@ -26,7 +26,7 @@ module.exports = function globParent(str) {
 
   // remove path parts that are globby
   do {
-    str = pathDirname.posix(str);
+    str = pathPosixDirname(str);
   } while (isGlob(str) || globby.test(str));
 
   // remove escape chars and return result
