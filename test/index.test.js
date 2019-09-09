@@ -84,7 +84,12 @@ describe('glob-parent', function() {
     assert.equal(gp('\\{foo,bar}/'), '{foo,bar}');
     assert.equal(gp('\\{foo,bar\\}/'), '{foo,bar}');
     assert.equal(gp('{foo,bar\\}/'), '.');
-    if (!isWin32) {
+
+    if (isWin32) {
+      // On Windows we are trying to flip backslashes foo-\\( → foo-/(
+      assert.equal(gp('foo-\\(bar\\).md'), 'foo-');
+    } else {
+      assert.equal(gp('foo-\\(bar\\).md'), '.');
       assert.equal(gp('\\[bar]'), '[bar]');
       assert.equal(gp('[bar\\]'), '.');
       assert.equal(gp('\\{foo,bar\\}'), '{foo,bar}');
@@ -132,6 +137,12 @@ describe('glob-parent', function() {
     assert.equal(gp('path/foo'), 'path');
     assert.equal(gp('path/foo/'), 'path/foo');
     assert.equal(gp('path/foo/bar.js'), 'path/foo');
+
+    done();
+  });
+
+  it('should respect disabled auto flip backslashes', function(done) {
+    assert.equal(gp('foo-\\(bar\\).md', { flipBackslashes: false }), '.');
 
     done();
   });
