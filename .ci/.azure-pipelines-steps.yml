@@ -17,14 +17,10 @@ steps:
 - script: npm run coveralls
   displayName: Run coveralls
   env:
-    # Pretend to be AppVeyor for now
-    APPVEYOR: true
-    APPVEYOR_BUILD_NUMBER: $(Build.BuildNumber)
-    APPVEYOR_BUILD_ID: $(Agent.OS)_$(node_version)
-    APPVEYOR_REPO_COMMIT: $(Build.SourceVersion)
-    APPVEYOR_REPO_BRANCH: $(Build.SourceBranchName)
-    # Overwrite the AppVeyor Service Name
     COVERALLS_SERVICE_NAME: Azure Pipelines
+    COVERALLS_SERVICE_NUMBER: $(Build.BuildNumber)
+    COVERALLS_SERVICE_JOB_ID: $(Agent.OS)_$(node_version)
+    COVERALLS_GIT_BRANCH: $(Build.SourceBranchName)
     COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN_SECRET)
     COVERALLS_PARALLEL: true
     CI_PULL_REQUEST: $(System.PullRequest.PullRequestNumber)
