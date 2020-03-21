@@ -26,8 +26,10 @@ jobs:
       matrix:
         Node_v10:
           node_version: 10
+          npm_version: 6.4.1
         Node_v8:
           node_version: 8
+          npm_version: 6.4.1
         Node_v6:
           node_version: 6
     steps:
