@@ -78,6 +78,7 @@ describe('glob-parent', function() {
     assert.equal(gp('[bar]/'), '.');
     assert.equal(gp('./\\[bar]'), './[bar]');
     assert.equal(gp('\\[bar]/'), '[bar]');
+    assert.equal(gp('\\!dir/*'), '!dir');
     assert.equal(gp('[bar\\]/'), '.');
     assert.equal(gp('path/foo \\[bar]/'), 'path/foo [bar]');
     assert.equal(gp('path/\\{foo,bar}/'), 'path/{foo,bar}');
