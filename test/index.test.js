@@ -209,6 +209,13 @@ describe('glob2base test patterns', function() {
 
     done();
   });
+
+  it('should not be susceptible to SNYK-JS-GLOBPARENT-1016905', function(done) {
+    // This will time out if susceptible.
+    gp('{' + '/'.repeat(5000));
+
+    done();
+  });
 });
 
 if (isWin32) {
