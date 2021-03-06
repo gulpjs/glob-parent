@@ -6,7 +6,7 @@
 
 # glob-parent
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Azure Pipelines Build Status][azure-pipelines-image]][azure-pipelines-url] [![Travis Build Status][travis-image]][travis-url] [![AppVeyor Build Status][appveyor-image]][appveyor-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Gitter chat][gitter-image]][gitter-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][ci-image]][ci-url] [![Coveralls Status][coveralls-image]][coveralls-url]
 
 Extract the non-magic parent path from a glob string.
 
@@ -114,24 +114,19 @@ globParent('./foo \\[bar]*') // '.'
 
 ISC
 
+<!-- prettier-ignore-start -->
+[downloads-image]: https://img.shields.io/npm/dm/glop-parent.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/glop-parent
+[npm-image]: https://img.shields.io/npm/v/glop-parent.svg?style=flat-square
+
+[ci-url]: https://github.com/gulpjs/glop-parent/actions?query=workflow:dev
+[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/glop-parent/dev?style=flat-square
+
+[coveralls-url]: https://coveralls.io/r/gulpjs/glop-parent
+[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glop-parent/master.svg?style=flat-square
+<!-- prettier-ignore-end -->
+
+<!-- prettier-ignore-start -->
 [expand-braces]: https://github.com/jonschlinkert/expand-braces
 [expand-brackets]: https://github.com/jonschlinkert/expand-brackets
-
-[downloads-image]: https://img.shields.io/npm/dm/glob-parent.svg
-[npm-url]: https://www.npmjs.com/package/glob-parent
-[npm-image]: https://img.shields.io/npm/v/glob-parent.svg
-
-[azure-pipelines-url]: https://dev.azure.com/gulpjs/gulp/_build/latest?definitionId=2&branchName=master
-[azure-pipelines-image]: https://dev.azure.com/gulpjs/gulp/_apis/build/status/glob-parent?branchName=master
-
-[travis-url]: https://travis-ci.org/gulpjs/glob-parent
-[travis-image]: https://img.shields.io/travis/gulpjs/glob-parent.svg?label=travis-ci
-
-[appveyor-url]: https://ci.appveyor.com/project/gulpjs/glob-parent
-[appveyor-image]: https://img.shields.io/appveyor/ci/gulpjs/glob-parent.svg?label=appveyor
-
-[coveralls-url]: https://coveralls.io/r/gulpjs/glob-parent
-[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/master.svg
-
-[gitter-url]: https://gitter.im/gulpjs/gulp
-[gitter-image]: https://badges.gitter.im/gulpjs/gulp.svg
+<!-- prettier-ignore-end -->
