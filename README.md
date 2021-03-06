@@ -117,15 +117,15 @@ globParent('./foo \\[bar]*'); // '.'
 ISC
 
 <!-- prettier-ignore-start -->
-[downloads-image]: https://img.shields.io/npm/dm/glop-parent.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/glop-parent
-[npm-image]: https://img.shields.io/npm/v/glop-parent.svg?style=flat-square
+[downloads-image]: https://img.shields.io/npm/dm/glob-parent.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/glob-parent
+[npm-image]: https://img.shields.io/npm/v/glob-parent.svg?style=flat-square
 
-[ci-url]: https://github.com/gulpjs/glop-parent/actions?query=workflow:dev
-[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/glop-parent/dev?style=flat-square
+[ci-url]: https://github.com/gulpjs/glob-parent/actions?query=workflow:dev
+[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/glob-parent/dev?style=flat-square
 
-[coveralls-url]: https://coveralls.io/r/gulpjs/glop-parent
-[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glop-parent/master.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/gulpjs/glob-parent
+[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/master.svg?style=flat-square
 <!-- prettier-ignore-end -->
 
 <!-- prettier-ignore-start -->
