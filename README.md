@@ -45,7 +45,7 @@ Takes a string and returns the part of the path before the glob begins. Be aware
 ```js
 {
   // Disables the automatic conversion of slashes for Windows
-  flipBackslashes: true
+  flipBackslashes: true;
 }
 ```
 
@@ -66,13 +66,14 @@ The following characters have special significance in glob patterns and must be 
 **Example**
 
 ```js
-globParent('foo/[bar]/') // 'foo'
-globParent('foo/\\[bar]/') // 'foo/[bar]'
+globParent('foo/[bar]/'); // 'foo'
+globParent('foo/\\[bar]/'); // 'foo/[bar]'
 ```
 
 ## Limitations
 
 ### Braces & Brackets
+
 This library attempts a quick and imperfect method of determining which path
 parts have glob magic without fully parsing/lexing the pattern. There are some
 advanced use cases that can trip it up, such as nested braces where the outer
@@ -82,6 +83,7 @@ ensure higher-fidelity glob handling in your library, it is recommended that you
 pre-process your input with [expand-braces] and/or [expand-brackets].
 
 ### Windows
+
 Backslashes are not valid path separators for globs. If a path with backslashes
 is provided anyway, for simple cases, glob-parent will replace the path
 separator for you and return the non-glob parent path (now with
@@ -91,10 +93,10 @@ This cannot be used in conjunction with escape characters.
 
 ```js
 // BAD
-globParent('C:\\Program Files \\(x86\\)\\*.ext') // 'C:/Program Files /(x86/)'
+globParent('C:\\Program Files \\(x86\\)\\*.ext'); // 'C:/Program Files /(x86/)'
 
 // GOOD
-globParent('C:/Program Files\\(x86\\)/*.ext') // 'C:/Program Files (x86)'
+globParent('C:/Program Files\\(x86\\)/*.ext'); // 'C:/Program Files (x86)'
 ```
 
 If you are using escape characters for a pattern without path parts (i.e.
@@ -102,12 +104,12 @@ relative to `cwd`), prefix with `./` to avoid confusing glob-parent.
 
 ```js
 // BAD
-globParent('foo \\[bar]') // 'foo '
-globParent('foo \\[bar]*') // 'foo '
+globParent('foo \\[bar]'); // 'foo '
+globParent('foo \\[bar]*'); // 'foo '
 
 // GOOD
-globParent('./foo \\[bar]') // 'foo [bar]'
-globParent('./foo \\[bar]*') // '.'
+globParent('./foo \\[bar]'); // 'foo [bar]'
+globParent('./foo \\[bar]*'); // '.'
 ```
 
 ## License

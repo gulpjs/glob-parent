@@ -70,8 +70,12 @@ describe('glob-parent', function () {
     expect(gp('path/\\[\\*\\]/subdir/foo.*')).toEqual('path/[*]/subdir');
     expect(gp('path/\\*(a|b)/subdir/foo.*')).toEqual('path');
     expect(gp('path/\\*/(a|b)/subdir/foo.*')).toEqual('path/*');
-    expect(gp('path/\\*\\(a\\|b\\)/subdir/foo.*')).toEqual('path/*(a|b)/subdir');
-    expect(gp('path/\\[foo bar\\]/subdir/foo.*')).toEqual('path/[foo bar]/subdir');
+    expect(gp('path/\\*\\(a\\|b\\)/subdir/foo.*')).toEqual(
+      'path/*(a|b)/subdir'
+    );
+    expect(gp('path/\\[foo bar\\]/subdir/foo.*')).toEqual(
+      'path/[foo bar]/subdir'
+    );
     expect(gp('path/\\[bar]/')).toEqual('path/[bar]');
     expect(gp('path/\\[bar]')).toEqual('path/[bar]');
     expect(gp('[bar]')).toEqual('.');
@@ -110,10 +114,10 @@ describe('glob-parent', function () {
     expect(gp('{,/,bar/baz,qux}')).toEqual('.');
     expect(gp('\\{,/,bar/baz,qux\\}')).toEqual('{,/,bar/baz,qux}');
     expect(gp('\\{,/,bar/baz,qux}/')).toEqual('{,/,bar/baz,qux}');
-    expect(gp('path/foo[a\\\/]/')).toEqual('path');
-    expect(gp('path/foo\\[a\\\/]/')).toEqual('path/foo[a\\\/]');
-    expect(gp('foo[a\\\/]')).toEqual('.');
-    expect(gp('foo\\[a\\\/]')).toEqual('foo[a\\\/]');
+    expect(gp('path/foo[a\\/]/')).toEqual('path');
+    expect(gp('path/foo\\[a\\/]/')).toEqual('path/foo[a\\/]');
+    expect(gp('foo[a\\/]')).toEqual('.');
+    expect(gp('foo\\[a\\/]')).toEqual('foo[a\\/]');
     expect(gp('path/(foo/bar|baz)')).toEqual('path');
     expect(gp('path/(foo/bar|baz)/')).toEqual('path');
     expect(gp('path/\\(foo/bar|baz)/')).toEqual('path/(foo/bar|baz)');
@@ -125,7 +129,9 @@ describe('glob-parent', function () {
   it('should handle nested braces', function (done) {
     expect(gp('path/{../,./,{bar,/baz\\},qux\\}/')).toEqual('path');
     expect(gp('path/{../,./,\\{bar,/baz},qux}/')).toEqual('path');
-    expect(gp('path/\\{../,./,\\{bar,/baz\\},qux\\}/')).toEqual('path/{../,./,{bar,/baz},qux}');
+    expect(gp('path/\\{../,./,\\{bar,/baz\\},qux\\}/')).toEqual(
+      'path/{../,./,{bar,/baz},qux}'
+    );
     expect(gp('{../,./,{bar,/baz\\},qux\\}/')).toEqual('.');
     expect(gp('{../,./,{bar,/baz\\},qux\\}')).toEqual('.');
     expect(gp('path/{,/,bar/{baz,qux\\}}/')).toEqual('path');
