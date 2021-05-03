@@ -77,10 +77,10 @@ describe('glob-parent', function () {
       'path/[foo bar]/subdir'
     );
     expect(gp('path/\\[bar]/')).toEqual('path/[bar]');
-    expect(gp('path/\\[bar]')).toEqual('path/[bar]');
+    expect(gp('path/\\[bar]')).toEqual('path');
     expect(gp('[bar]')).toEqual('.');
     expect(gp('[bar]/')).toEqual('.');
-    expect(gp('./\\[bar]')).toEqual('./[bar]');
+    expect(gp('./\\[bar]')).toEqual('.');
     expect(gp('\\[bar]/')).toEqual('[bar]');
     expect(gp('\\!dir/*')).toEqual('!dir');
     expect(gp('[bar\\]/')).toEqual('.');
@@ -95,9 +95,9 @@ describe('glob-parent', function () {
       expect(gp('foo-\\(bar\\).md')).toEqual('foo-');
     } else {
       expect(gp('foo-\\(bar\\).md')).toEqual('.');
-      expect(gp('\\[bar]')).toEqual('[bar]');
+      expect(gp('\\[bar]')).toEqual('.');
       expect(gp('[bar\\]')).toEqual('.');
-      expect(gp('\\{foo,bar\\}')).toEqual('{foo,bar}');
+      expect(gp('\\{foo,bar\\}')).toEqual('.');
       expect(gp('{foo,bar\\}')).toEqual('.');
     }
 
