@@ -20,7 +20,7 @@ jobs:
       - name: Prettier
         uses: gulpjs/prettier_action@v3.0
         with:
-          commit_message: 'Build: Run prettier'
+          commit_message: 'chore: Run prettier'
           prettier_options: '--write .'
 
   test:
@@ -70,5 +70,5 @@ jobs:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@v1.1.0
         with:
-          github-token: ${{ secrets.github_token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
