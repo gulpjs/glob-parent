@@ -4,6 +4,8 @@ var gp = require('../');
 var expect = require('expect');
 var isWin32 = require('os').platform() === 'win32';
 
+var performance = require('perf_hooks').performance;
+
 describe('glob-parent', function () {
   it('should strip glob magic to return parent path', function (done) {
     expect(gp('.')).toEqual('.');
@@ -221,6 +223,26 @@ describe('glob2base test patterns', function () {
   it('should not be susceptible to SNYK-JS-GLOBPARENT-1016905', function (done) {
     // This will time out if susceptible.
     gp('{' + '/'.repeat(5000));
+
+    done();
+  });
+
+  it('should not increase calc. time exponentially by \'/\' count [CVE-2021-35065]', function (done) {
+    var measure = function(n) {
+      var input = "{" + "/".repeat(n);
+      var st = performance.now();
+      gp(input);
+      var ed = performance.now();
+      return (ed - st) / (n * n);
+    };
+
+    var result0 = measure(5000);
+
+    [50000, 500000].forEach(function(n) {
+      var result1 = measure(n);
+      expect(result1 / result0).toBeLessThan(0.9);
+      result0 = result1;
+    });
 
     done();
   });
