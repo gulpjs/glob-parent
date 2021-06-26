@@ -4,8 +4,6 @@ var gp = require('../');
 var expect = require('expect');
 var isWin32 = require('os').platform() === 'win32';
 
-var performance = require('perf_hooks').performance;
-
 describe('glob-parent', function () {
   it('should strip glob magic to return parent path', function (done) {
     expect(gp('.')).toEqual('.');
@@ -227,23 +225,21 @@ describe('glob2base test patterns', function () {
     done();
   });
 
-  it('should not increase calc. time exponentially by \'/\' count [CVE-2021-35065]', function (done) {
-    var measure = function(n) {
-      var input = "{" + "/".repeat(n);
-      var st = performance.now();
-      gp(input);
-      var ed = performance.now();
-      return (ed - st) / (n * n);
-    };
+  it('should finish in reasonable time for \'{\' + \'/\'.repeat(n) [CVE-2021-35065]', function(done) {
+    this.timeout(1000);
+    gp('{' + '/'.repeat(500000));
+    done();
+  });
 
-    var result0 = measure(5000);
+  it('should finish in reasonable time for \'{\'.repeat(n)', function(done) {
+    this.timeout(1000);
+    gp('{'.repeat(500000));
+    done();
+  });
 
-    [50000, 500000].forEach(function(n) {
-      var result1 = measure(n);
-      expect(result1 / result0).toBeLessThan(0.9);
-      result0 = result1;
-    });
-
+  it('should finish in reasonable time for \'(\'.repeat(n)', function(done) {
+    this.timeout(1000);
+    gp('('.repeat(500000));
     done();
   });
 });
