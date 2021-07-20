@@ -224,6 +224,24 @@ describe('glob2base test patterns', function () {
 
     done();
   });
+
+  it('should finish in reasonable time for \'{\' + \'/\'.repeat(n) [CVE-2021-35065]', function(done) {
+    this.timeout(1000);
+    gp('{' + '/'.repeat(500000));
+    done();
+  });
+
+  it('should finish in reasonable time for \'{\'.repeat(n)', function(done) {
+    this.timeout(1000);
+    gp('{'.repeat(500000));
+    done();
+  });
+
+  it('should finish in reasonable time for \'(\'.repeat(n)', function(done) {
+    this.timeout(1000);
+    gp('('.repeat(500000));
+    done();
+  });
 });
 
 if (isWin32) {
