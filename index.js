@@ -39,9 +39,8 @@ module.exports = function globParent(str, opts) {
   return str.replace(escaped, '$1');
 };
 
-
 function isEnclosure(str) {
-  var lastChar = str.slice(-1)
+  var lastChar = str.slice(-1);
 
   var enclosureStart;
   switch (lastChar) {
