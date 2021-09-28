@@ -6,7 +6,6 @@ var isWin32 = require('os').platform() === 'win32';
 
 var slash = '/';
 var backslash = /\\/g;
-var globby = /(^|[^\\])([{[]|\([^)]+$)/;
 var escaped = /\\([!*?|[\](){}])/g;
 
 /**
@@ -33,7 +32,7 @@ module.exports = function globParent(str, opts) {
   // remove path parts that are globby
   do {
     str = pathPosixDirname(str);
-  } while (isGlob(str) || globby.test(str));
+  } while (isGlobby(str));
 
   // remove escape chars and return result
   return str.replace(escaped, '$1');
@@ -60,4 +59,17 @@ function isEnclosure(str) {
   }
 
   return str.slice(foundIndex + 1, -1).includes(slash);
+}
+
+function isGlobby(str) {
+  if (/\([^()]+$/.test(str))  {
+    return true;
+  }
+  if (str[0] === '{' || str[0] === '[') {
+    return true;
+  }
+  if (/[^\\][{[]/.test(str)) {
+    return true;
+  }
+  return isGlob(str);
 }
