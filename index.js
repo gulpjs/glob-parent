@@ -62,7 +62,7 @@ function isEnclosure(str) {
 }
 
 function isGlobby(str) {
-  if (/\([^()]+$/.test(str))  {
+  if (/\([^()]+$/.test(str)) {
     return true;
   }
   if (str[0] === '{' || str[0] === '[') {
