@@ -23,7 +23,7 @@
     "test": "nyc mocha --async-only"
   },
   "dependencies": {
-    "is-glob": "^4.0.1"
+    "is-glob": "^4.0.3"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
