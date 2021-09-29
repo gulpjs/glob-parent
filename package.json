@@ -22,9 +22,6 @@
     "pretest": "npm run lint",
     "test": "nyc mocha --async-only"
   },
-  "dependencies": {
-    "is-glob": "^4.0.1"
-  },
   "devDependencies": {
     "eslint": "^7.0.0",
     "eslint-config-gulp": "^5.0.0",
@@ -50,5 +47,8 @@
     "directory",
     "base",
     "wildcard"
-  ]
+  ],
+  "dependencies": {
+    "is-glob": "^4.0.3"
+  }
 }
