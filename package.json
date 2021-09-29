@@ -47,8 +47,5 @@
     "directory",
     "base",
     "wildcard"
-  ],
-  "dependencies": {
-    "is-glob": "^4.0.3"
-  }
+  ]
 }
