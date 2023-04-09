@@ -122,10 +122,10 @@ ISC
 [npm-image]: https://img.shields.io/npm/v/glob-parent.svg?style=flat-square
 
 [ci-url]: https://github.com/gulpjs/glob-parent/actions?query=workflow:dev
-[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/glob-parent/dev?style=flat-square
+[ci-image]: https://img.shields.io/github/actions/workflow/status/gulpjs/glob-parent/dev.yml?branch=main&style=flat-square
 
 [coveralls-url]: https://coveralls.io/r/gulpjs/glob-parent
-[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/master.svg?style=flat-square
+[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/main.svg?style=flat-square
 <!-- prettier-ignore-end -->
 
 <!-- prettier-ignore-start -->
