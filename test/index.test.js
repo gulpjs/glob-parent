@@ -112,12 +112,12 @@ describe('glob-parent', function () {
     expect(gp('/{,/,bar/baz,qux}/')).toEqual('/');
     expect(gp('/\\{,/,bar/baz,qux}/')).toEqual('/{,/,bar/baz,qux}');
     expect(gp('{,/,bar/baz,qux}')).toEqual('.');
-    expect(gp('\\{,/,bar/baz,qux\\}')).toEqual('{,/,bar/baz,qux}');
+    expect(gp('\\{,/,bar/baz,qux\\}')).toEqual('{,/,bar');
     expect(gp('\\{,/,bar/baz,qux}/')).toEqual('{,/,bar/baz,qux}');
     expect(gp('path/foo[a\\/]/')).toEqual('path');
     expect(gp('path/foo\\[a\\/]/')).toEqual('path/foo[a\\/]');
     expect(gp('foo[a\\/]')).toEqual('.');
-    expect(gp('foo\\[a\\/]')).toEqual('foo[a\\/]');
+    expect(gp('foo\\[a\\/]')).toEqual('foo[a\\');
     expect(gp('path/(foo/bar|baz)')).toEqual('path');
     expect(gp('path/(foo/bar|baz)/')).toEqual('path');
     expect(gp('path/\\(foo/bar|baz)/')).toEqual('path/(foo/bar|baz)');
@@ -136,8 +136,36 @@ describe('glob-parent', function () {
     expect(gp('{../,./,{bar,/baz\\},qux\\}')).toEqual('.');
     expect(gp('path/{,/,bar/{baz,qux\\}}/')).toEqual('path');
     expect(gp('path/{,/,bar/{baz,qux}\\}/')).toEqual('path');
-    // expect(gp('path/\\{../,./,{bar,/baz},qux}/')).toEqual('path');
+    expect(gp('path/\\{../,./,{bar,/baz},qux}')).toEqual('path/{../,.');
+    expect(gp('path/\\{../,./,{bar,/baz},qux}/')).toEqual('path/{../,.');
 
+    done();
+  });
+
+  it('should treat escaped brackets as normal chars', function (done) {
+    if (isWin32) {
+      expect(gp('aaa\\}')).toEqual('aaa');
+      expect(gp('\\{aaa/bbb\\}')).toEqual('{aaa');
+      expect(gp('\\{\\{aaa/bbb\\}')).toEqual('{{aaa');
+      expect(gp('{\\{aaa/bbb}')).toEqual('.');
+      expect(gp('ccc/{\\{aaa/bbb}')).toEqual('ccc');
+      expect(gp('ccc\\/\\{\\{aaa/bbb}')).toEqual('ccc\\/{{aaa');
+
+      var opts = { flipBackslashes: true };
+      expect(gp('aaa\\}', opts)).toEqual('aaa');
+      expect(gp('\\{aaa/bbb\\}', opts)).toEqual('{aaa');
+      expect(gp('\\{\\{aaa/bbb\\}', opts)).toEqual('{{aaa');
+      expect(gp('{\\{aaa/bbb}', opts)).toEqual('.');
+      expect(gp('ccc/{\\{aaa/bbb}', opts)).toEqual('ccc');
+      expect(gp('ccc\\/\\{\\{aaa/bbb}', opts)).toEqual('ccc\\/{{aaa');
+    } else {
+      expect(gp('aaa\\}')).toEqual('.');
+      expect(gp('\\{aaa/bbb\\}')).toEqual('{aaa');
+      expect(gp('\\{\\{aaa/bbb\\}')).toEqual('{{aaa');
+      expect(gp('{\\{aaa/bbb}')).toEqual('.');
+      expect(gp('ccc/{\\{aaa/bbb}')).toEqual('ccc');
+      expect(gp('ccc\\/\\{\\{aaa/bbb}')).toEqual('ccc\\/{{aaa');
+    }
     done();
   });
 

@@ -53,12 +53,36 @@ function isEnclosure(str) {
       return false;
   }
 
-  var foundIndex = str.indexOf(enclosureStart);
-  if (foundIndex < 0) {
+  var enclosureIndex = str.length - 1;
+  var foundIndex = findLastNonBsCharFrom(str, enclosureIndex - 1);
+  if ((enclosureIndex - foundIndex) % 2 === 0) {
+    // Last enclosure is escaped.
     return false;
   }
 
-  return str.slice(foundIndex + 1, -1).includes(slash);
+  while (foundIndex >= 0) {
+    enclosureIndex = str.lastIndexOf(enclosureStart, foundIndex);
+    if (enclosureIndex < 0) {
+      return false;
+    }
+
+    foundIndex = findLastNonBsCharFrom(str, enclosureIndex - 1);
+    if ((enclosureIndex - foundIndex) % 2 === 0) {
+      // Enclosure is escaped.
+      return false;
+    }
+  }
+
+  return str.slice(enclosureIndex + 1, -1).includes(slash);
+}
+
+function findLastNonBsCharFrom(str, startIndex) {
+  for (var i = startIndex; i >= 0; i--) {
+    if (str[i] !== '\\') {
+      return i;
+    }
+  }
+  return -1;
 }
 
 function isGlobby(str) {
