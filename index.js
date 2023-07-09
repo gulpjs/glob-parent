@@ -47,7 +47,19 @@ module.exports = function globParent(str, opts) {
   // replace continuous slashes to single slash
   str = str.replace(/\/+/g, '/');
 
+  // remove last single dot
+  if (str.slice(-2) === '/.') {
+    str = str.slice(0, -1)
+  }
+  // remove last './'
+  while (str.slice(-3) === '/./') {
+    str = str.slice(0, -2)
+  }
+
   if (isWin32 && winDriveOrUncVolume) {
+    if (str === '.' || str === './') {
+      str = '';
+    }
     str = winDriveOrUncVolume + str;
   }
 

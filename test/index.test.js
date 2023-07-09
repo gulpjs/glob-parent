@@ -252,6 +252,41 @@ describe('glob2base test patterns', function () {
     gp('/('.repeat(500000) + ')');
     done();
   });
+
+  it('should remove tail \'.\' and \'./\'', function(done) {
+    expect(gp('foo/./*')).toEqual('foo/');
+    expect(gp('foo/./././*')).toEqual('foo/');
+    expect(gp('./././*')).toEqual('./');
+    expect(gp('/./././*')).toEqual('/');
+
+    if (isWin32) {
+      expect(gp('C:/foo/./*')).toEqual('C:/foo/');
+      expect(gp('C:/foo/./././*')).toEqual('C:/foo/');
+      expect(gp('C:/./././*')).toEqual('C:/');
+
+      expect(gp('C:\\foo\\.\\*')).toEqual('C:/foo/');
+      expect(gp('C:\\foo\\.\\.\\.\\*')).toEqual('C:/foo/');
+      expect(gp('C:\\.\\.\\.\\*')).toEqual('C:/');
+
+      expect(gp('C:foo/./*')).toEqual('C:foo/');
+      expect(gp('C:foo/./././*')).toEqual('C:foo/');
+      expect(gp('C:./././*')).toEqual('C:');
+
+      expect(gp('C:foo\\.\\*')).toEqual('C:foo/');
+      expect(gp('C:foo\\.\\.\\.\\*')).toEqual('C:foo/');
+      expect(gp('C:.\\.\\.\\*')).toEqual('C:');
+
+      expect(gp('\\\\System07\\C$/foo/./*')).toEqual('\\\\System07\\C$/foo/');
+      expect(gp('\\\\System07\\C$/foo/./././*')).toEqual('\\\\System07\\C$/foo/');
+      expect(gp('\\\\System07\\C$/./././*')).toEqual('\\\\System07\\C$/');
+
+      expect(gp('\\\\System07\\C$\\foo\\.\\*')).toEqual('\\\\System07\\C$/foo/');
+      expect(gp('\\\\System07\\C$\\foo\\.\\.\\.\\*')).toEqual('\\\\System07\\C$/foo/');
+      expect(gp('\\\\System07\\C$\\.\\.\\.\\*')).toEqual('\\\\System07\\C$/');
+    }
+
+    done();
+  });
 });
 
 if (isWin32) {
@@ -268,7 +303,7 @@ if (isWin32) {
       expect(gp('C:/')).toEqual('C:/');
       expect(gp('C:/.')).toEqual('C:/');
       expect(gp('C:/*')).toEqual('C:/');
-      expect(gp('C:/./*')).toEqual('C:/.');
+      expect(gp('C:/./*')).toEqual('C:/');
       expect(gp('C://')).toEqual('C:/');
       expect(gp('C://*')).toEqual('C:/');
       expect(gp('C:/path/*.js')).toEqual('C:/path');
@@ -276,7 +311,7 @@ if (isWin32) {
       expect(gp('C:\\')).toEqual('C:/');
       expect(gp('C:\\.')).toEqual('C:/');
       expect(gp('C:\\*')).toEqual('C:/');
-      expect(gp('C:\\.\\*')).toEqual('C:/.');
+      expect(gp('C:\\.\\*')).toEqual('C:/');
       expect(gp('C:\\\\')).toEqual('C:/');
       expect(gp('C:\\\\*')).toEqual('C:/');
       expect(gp('C:\\path\\*.js')).toEqual('C:/path');
@@ -285,17 +320,17 @@ if (isWin32) {
     });
 
     it('should return parent dirname from relative path with drive letter', function(done) {
-      expect(gp('C:')).toEqual('C:.');
-      expect(gp('C:.')).toEqual('C:.');
-      expect(gp('C:*')).toEqual('C:.');
-      expect(gp('C:./*')).toEqual('C:.');
-      expect(gp('C:.//')).toEqual('C:./');
-      expect(gp('C:.//*')).toEqual('C:./');
+      expect(gp('C:')).toEqual('C:');
+      expect(gp('C:.')).toEqual('C:');
+      expect(gp('C:*')).toEqual('C:');
+      expect(gp('C:./*')).toEqual('C:');
+      expect(gp('C:.//')).toEqual('C:');
+      expect(gp('C:.//*')).toEqual('C:');
       expect(gp('C:path/*.js')).toEqual('C:path');
 
-      expect(gp('C:.\\*')).toEqual('C:.');
-      expect(gp('C:.\\\\')).toEqual('C:./');
-      expect(gp('C:.\\\\*')).toEqual('C:./');
+      expect(gp('C:.\\*')).toEqual('C:');
+      expect(gp('C:.\\\\')).toEqual('C:');
+      expect(gp('C:.\\\\*')).toEqual('C:');
       expect(gp('C:path\\*.js')).toEqual('C:path');
 
       done();
@@ -305,7 +340,7 @@ if (isWin32) {
       expect(gp('\\\\System07\\C$/')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$/.')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$/*')).toEqual('\\\\System07\\C$/');
-      expect(gp('\\\\System07\\C$/./*')).toEqual('\\\\System07\\C$/.');
+      expect(gp('\\\\System07\\C$/./*')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$//')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$//*')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$/path/*.js')).toEqual('\\\\System07\\C$/path');
@@ -313,7 +348,7 @@ if (isWin32) {
       expect(gp('\\\\System07\\C$/', { flipBackslashes: false })).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$/.', { flipBackslashes: false })).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$/*', { flipBackslashes: false })).toEqual('\\\\System07\\C$/');
-      expect(gp('\\\\System07\\C$/./*', { flipBackslashes: false })).toEqual('\\\\System07\\C$/.');
+      expect(gp('\\\\System07\\C$/./*', { flipBackslashes: false })).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$//', { flipBackslashes: false })).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$//*', { flipBackslashes: false })).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$/path/*.js')).toEqual('\\\\System07\\C$/path');
@@ -321,7 +356,7 @@ if (isWin32) {
       expect(gp('\\\\System07\\C$\\')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$\\.')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$\\*')).toEqual('\\\\System07\\C$/');
-      expect(gp('\\\\System07\\C$\\.\\*')).toEqual('\\\\System07\\C$/.');
+      expect(gp('\\\\System07\\C$\\.\\*')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$\\\\')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$\\\\*')).toEqual('\\\\System07\\C$/');
       expect(gp('\\\\System07\\C$\\path\\*.js')).toEqual('\\\\System07\\C$/path');
