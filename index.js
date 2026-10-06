@@ -21,6 +21,8 @@ module.exports = function globParent(str, opts) {
     str = str.replace(backslash, slash);
   }
 
+  var win32Root = isWin32 && /^([a-zA-Z]:\/)/.exec(str);
+
   // special case for strings ending in enclosure containing path separator
   if (isEnclosure(str)) {
     str += slash;
@@ -34,8 +36,12 @@ module.exports = function globParent(str, opts) {
     str = pathPosixDirname(str);
   } while (isGlobby(str));
 
-  // remove escape chars and return result
-  return str.replace(escaped, '$1');
+  // remove escape chars and preserve a drive root used as the parent
+  str = str.replace(escaped, '$1');
+  if (win32Root && str === win32Root[0].slice(0, -1)) {
+    return win32Root[0];
+  }
+  return str;
 };
 
 function isEnclosure(str) {

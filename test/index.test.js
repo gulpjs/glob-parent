@@ -252,6 +252,23 @@ describe('glob2base test patterns', function () {
 
 if (isWin32) {
   describe('technically invalid windows globs', function () {
+    it('should preserve a drive root when it is the static parent', function (done) {
+      var options = { flipBackslashes: false };
+
+      expect(gp('C:/', options)).toEqual('C:/');
+      expect(gp('C:/.', options)).toEqual('C:/');
+      expect(gp('C:/*', options)).toEqual('C:/');
+      expect(gp('C:/./*', options)).toEqual('C:/.');
+      expect(gp('C://', options)).toEqual('C:/');
+      expect(gp('C://*', options)).toEqual('C:/');
+      expect(gp('C:/file.js', options)).toEqual('C:/');
+      expect(gp('C:/dir/*.js', options)).toEqual('C:/dir');
+      expect(gp('C:\\')).toEqual('C:/');
+      expect(gp('C:\\*')).toEqual('C:/');
+
+      done();
+    });
+
     it('should manage simple globs with backslash path separator', function (done) {
       expect(gp('C:\\path\\*.js')).toEqual('C:/path');
 
