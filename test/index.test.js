@@ -105,7 +105,6 @@ describe("glob-parent", function () {
   });
 
   it("should respect glob enclosures with embedded separators", function (done) {
-    /* eslint-disable no-useless-escape */
     expect(gp("path/{,/,bar/baz,qux}/")).toEqual("path");
     expect(gp("path/\\{,/,bar/baz,qux}/")).toEqual("path/{,/,bar/baz,qux}");
     expect(gp("path/\\{,/,bar/baz,qux\\}/")).toEqual("path/{,/,bar/baz,qux}");
@@ -121,8 +120,6 @@ describe("glob-parent", function () {
     expect(gp("path/(foo/bar|baz)")).toEqual("path");
     expect(gp("path/(foo/bar|baz)/")).toEqual("path");
     expect(gp("path/\\(foo/bar|baz)/")).toEqual("path/(foo/bar|baz)");
-    /* eslint-enable no-useless-escape */
-
     done();
   });
 
