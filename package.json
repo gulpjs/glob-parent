@@ -8,7 +8,10 @@
     "Blaine Bublitz <blaine.bublitz@gmail.com>"
   ],
   "funding": "https://github.com/sponsors/gulpjs",
-  "repository": "gulpjs/glob-parent",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gulpjs/glob-parent.git"
+  },
   "license": "ISC",
   "engines": {
     "node": ">= 22.15.0"
