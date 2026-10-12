@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-var isGlob = require('is-glob');
-var pathPosixDirname = require('path').posix.dirname;
-var isWin32 = require('os').platform() === 'win32';
+var isGlob = require("is-glob");
+var pathPosixDirname = require("path").posix.dirname;
+var isWin32 = require("os").platform() === "win32";
 
-var slash = '/';
+var slash = "/";
 var backslash = /\\/g;
 var escaped = /\\([!*?|[\](){}])/g;
 
@@ -27,7 +27,7 @@ module.exports = function globParent(str, opts) {
   }
 
   // preserves full path in case of trailing path separator
-  str += 'a';
+  str += "a";
 
   // remove path parts that are globby
   do {
@@ -35,7 +35,7 @@ module.exports = function globParent(str, opts) {
   } while (isGlobby(str));
 
   // remove escape chars and return result
-  return str.replace(escaped, '$1');
+  return str.replace(escaped, "$1");
 };
 
 function isEnclosure(str) {
@@ -43,11 +43,11 @@ function isEnclosure(str) {
 
   var enclosureStart;
   switch (lastChar) {
-    case '}':
-      enclosureStart = '{';
+    case "}":
+      enclosureStart = "{";
       break;
-    case ']':
-      enclosureStart = '[';
+    case "]":
+      enclosureStart = "[";
       break;
     default:
       return false;
@@ -65,7 +65,7 @@ function isGlobby(str) {
   if (/\([^()]+$/.test(str)) {
     return true;
   }
-  if (str[0] === '{' || str[0] === '[') {
+  if (str[0] === "{" || str[0] === "[") {
     return true;
   }
   if (/[^\\][{[]/.test(str)) {

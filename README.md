@@ -13,25 +13,25 @@ Extract the non-magic parent path from a glob string.
 ## Usage
 
 ```js
-var globParent = require('glob-parent');
+var globParent = require("glob-parent");
 
-globParent('path/to/*.js'); // 'path/to'
-globParent('/root/path/to/*.js'); // '/root/path/to'
-globParent('/*.js'); // '/'
-globParent('*.js'); // '.'
-globParent('**/*.js'); // '.'
-globParent('path/{to,from}'); // 'path'
-globParent('path/!(to|from)'); // 'path'
-globParent('path/?(to|from)'); // 'path'
-globParent('path/+(to|from)'); // 'path'
-globParent('path/*(to|from)'); // 'path'
-globParent('path/@(to|from)'); // 'path'
-globParent('path/**/*'); // 'path'
+globParent("path/to/*.js"); // 'path/to'
+globParent("/root/path/to/*.js"); // '/root/path/to'
+globParent("/*.js"); // '/'
+globParent("*.js"); // '.'
+globParent("**/*.js"); // '.'
+globParent("path/{to,from}"); // 'path'
+globParent("path/!(to|from)"); // 'path'
+globParent("path/?(to|from)"); // 'path'
+globParent("path/+(to|from)"); // 'path'
+globParent("path/*(to|from)"); // 'path'
+globParent("path/@(to|from)"); // 'path'
+globParent("path/**/*"); // 'path'
 
 // if provided a non-glob path, returns the nearest dir
-globParent('path/foo/bar.js'); // 'path/foo'
-globParent('path/foo/'); // 'path/foo'
-globParent('path/foo'); // 'path' (see issue #3 for details)
+globParent("path/foo/bar.js"); // 'path/foo'
+globParent("path/foo/"); // 'path/foo'
+globParent("path/foo"); // 'path' (see issue #3 for details)
 ```
 
 ## API
@@ -66,8 +66,8 @@ The following characters have special significance in glob patterns and must be 
 **Example**
 
 ```js
-globParent('foo/[bar]/'); // 'foo'
-globParent('foo/\\[bar]/'); // 'foo/[bar]'
+globParent("foo/[bar]/"); // 'foo'
+globParent("foo/\\[bar]/"); // 'foo/[bar]'
 ```
 
 ## Limitations
@@ -93,10 +93,10 @@ This cannot be used in conjunction with escape characters.
 
 ```js
 // BAD
-globParent('C:\\Program Files \\(x86\\)\\*.ext'); // 'C:/Program Files /(x86/)'
+globParent("C:\\Program Files \\(x86\\)\\*.ext"); // 'C:/Program Files /(x86/)'
 
 // GOOD
-globParent('C:/Program Files\\(x86\\)/*.ext'); // 'C:/Program Files (x86)'
+globParent("C:/Program Files\\(x86\\)/*.ext"); // 'C:/Program Files (x86)'
 ```
 
 If you are using escape characters for a pattern without path parts (i.e.
@@ -104,13 +104,23 @@ relative to `cwd`), prefix with `./` to avoid confusing glob-parent.
 
 ```js
 // BAD
-globParent('foo \\[bar]'); // 'foo '
-globParent('foo \\[bar]*'); // 'foo '
+globParent("foo \\[bar]"); // 'foo '
+globParent("foo \\[bar]*"); // 'foo '
 
 // GOOD
-globParent('./foo \\[bar]'); // 'foo [bar]'
-globParent('./foo \\[bar]*'); // '.'
+globParent("./foo \\[bar]"); // 'foo [bar]'
+globParent("./foo \\[bar]*"); // '.'
 ```
+
+## Strict No LLM / No AI Policy
+
+No LLMs for issues.
+
+No LLMs for patches / pull requests.
+
+No LLMs for comments on the bug tracker, including translation.
+
+English is encouraged, but not required. You are welcome to post in your native language and rely on others to have their own translation tools of choice to interpret your words.
 
 ## License
 
@@ -121,8 +131,8 @@ ISC
 [npm-url]: https://www.npmjs.com/package/glob-parent
 [npm-image]: https://img.shields.io/npm/v/glob-parent.svg?style=flat-square
 
-[ci-url]: https://github.com/gulpjs/glob-parent/actions?query=workflow:dev
-[ci-image]: https://img.shields.io/github/actions/workflow/status/gulpjs/glob-parent/dev.yml?branch=main&style=flat-square
+[ci-url]: https://github.com/gulpjs/glob-parent/actions/workflows/dev.yml
+[ci-image]: https://img.shields.io/github/actions/workflow/status/gulpjs/glob-parent/dev.yml?style=flat-square
 
 [coveralls-url]: https://coveralls.io/r/gulpjs/glob-parent
 [coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/main.svg?style=flat-square
