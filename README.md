@@ -137,3 +137,8 @@ ISC
 [coveralls-url]: https://coveralls.io/r/gulpjs/glob-parent
 [coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/main.svg?style=flat-square
 <!-- prettier-ignore-end -->
+
+<!-- prettier-ignore-start -->
+[expand-braces]: https://github.com/jonschlinkert/expand-braces
+[expand-brackets]: https://github.com/jonschlinkert/expand-brackets
+<!-- prettier-ignore-end -->
