@@ -1,258 +1,261 @@
 "use strict";
 
 var gp = require("../");
-var expect = require("expect");
+var assert = require("node:assert");
+var { describe, it } = require("node:test");
 var isWin32 = require("os").platform() === "win32";
 
 describe("glob-parent", function () {
-  it("should strip glob magic to return parent path", function (done) {
-    expect(gp(".")).toEqual(".");
-    expect(gp(".*")).toEqual(".");
-    expect(gp("/.*")).toEqual("/");
-    expect(gp("/.*/")).toEqual("/");
-    expect(gp("a/.*/b")).toEqual("a");
-    expect(gp("a*/.*/b")).toEqual(".");
-    expect(gp("*/a/b/c")).toEqual(".");
-    expect(gp("*")).toEqual(".");
-    expect(gp("*/")).toEqual(".");
-    expect(gp("*/*")).toEqual(".");
-    expect(gp("*/*/")).toEqual(".");
-    expect(gp("**")).toEqual(".");
-    expect(gp("**/")).toEqual(".");
-    expect(gp("**/*")).toEqual(".");
-    expect(gp("**/*/")).toEqual(".");
-    expect(gp("/*.js")).toEqual("/");
-    expect(gp("*.js")).toEqual(".");
-    expect(gp("**/*.js")).toEqual(".");
-    expect(gp("{a,b}")).toEqual(".");
-    expect(gp("/{a,b}")).toEqual("/");
-    expect(gp("/{a,b}/")).toEqual("/");
-    expect(gp("(a|b)")).toEqual(".");
-    expect(gp("/(a|b)")).toEqual("/");
-    expect(gp("./(a|b)")).toEqual(".");
-    expect(gp("a/(b c)")).toEqual("a"); // not an extglob
-    expect(gp("a/(b c)/")).toEqual("a/(b c)"); // not an extglob
-    expect(gp("a/(b c)/d")).toEqual("a/(b c)"); // not an extglob
-    expect(gp("path/to/*.js")).toEqual("path/to");
-    expect(gp("/root/path/to/*.js")).toEqual("/root/path/to");
-    expect(gp("chapter/foo [bar]/")).toEqual("chapter");
-    expect(gp("path/[a-z]")).toEqual("path");
-    expect(gp("[a-z]")).toEqual(".");
-    expect(gp("path/{to,from}")).toEqual("path");
-    expect(gp("path/(to|from)")).toEqual("path");
-    expect(gp("path/(foo bar)/subdir/foo.*")).toEqual("path/(foo bar)/subdir");
-    expect(gp("path/!(to|from)")).toEqual("path");
-    expect(gp("path/?(to|from)")).toEqual("path");
-    expect(gp("path/+(to|from)")).toEqual("path");
-    expect(gp("path/*(to|from)")).toEqual("path");
-    expect(gp("path/@(to|from)")).toEqual("path");
-    expect(gp("path/!/foo")).toEqual("path/!");
-    expect(gp("path/?/foo")).toEqual("path/?");
-    expect(gp("path/+/foo")).toEqual("path/+");
-    expect(gp("path/*/foo")).toEqual("path");
-    expect(gp("path/@/foo")).toEqual("path/@");
-    expect(gp("path/!/foo/")).toEqual("path/!/foo");
-    expect(gp("path/?/foo/")).toEqual("path/?/foo");
-    expect(gp("path/+/foo/")).toEqual("path/+/foo");
-    expect(gp("path/*/foo/")).toEqual("path");
-    expect(gp("path/@/foo/")).toEqual("path/@/foo");
-    expect(gp("path/**/*")).toEqual("path");
-    expect(gp("path/**/subdir/foo.*")).toEqual("path");
-    expect(gp("path/subdir/**/foo.js")).toEqual("path/subdir");
-    expect(gp("path/!subdir/foo.js")).toEqual("path/!subdir");
-    expect(gp("path/{foo,bar}/")).toEqual("path");
-
-    done();
+  it("should strip glob magic to return parent path", function () {
+    assert.deepStrictEqual(gp("."), ".");
+    assert.deepStrictEqual(gp(".*"), ".");
+    assert.deepStrictEqual(gp("/.*"), "/");
+    assert.deepStrictEqual(gp("/.*/"), "/");
+    assert.deepStrictEqual(gp("a/.*/b"), "a");
+    assert.deepStrictEqual(gp("a*/.*/b"), ".");
+    assert.deepStrictEqual(gp("*/a/b/c"), ".");
+    assert.deepStrictEqual(gp("*"), ".");
+    assert.deepStrictEqual(gp("*/"), ".");
+    assert.deepStrictEqual(gp("*/*"), ".");
+    assert.deepStrictEqual(gp("*/*/"), ".");
+    assert.deepStrictEqual(gp("**"), ".");
+    assert.deepStrictEqual(gp("**/"), ".");
+    assert.deepStrictEqual(gp("**/*"), ".");
+    assert.deepStrictEqual(gp("**/*/"), ".");
+    assert.deepStrictEqual(gp("/*.js"), "/");
+    assert.deepStrictEqual(gp("*.js"), ".");
+    assert.deepStrictEqual(gp("**/*.js"), ".");
+    assert.deepStrictEqual(gp("{a,b}"), ".");
+    assert.deepStrictEqual(gp("/{a,b}"), "/");
+    assert.deepStrictEqual(gp("/{a,b}/"), "/");
+    assert.deepStrictEqual(gp("(a|b)"), ".");
+    assert.deepStrictEqual(gp("/(a|b)"), "/");
+    assert.deepStrictEqual(gp("./(a|b)"), ".");
+    assert.deepStrictEqual(gp("a/(b c)"), "a"); // not an extglob
+    assert.deepStrictEqual(gp("a/(b c)/"), "a/(b c)"); // not an extglob
+    assert.deepStrictEqual(gp("a/(b c)/d"), "a/(b c)"); // not an extglob
+    assert.deepStrictEqual(gp("path/to/*.js"), "path/to");
+    assert.deepStrictEqual(gp("/root/path/to/*.js"), "/root/path/to");
+    assert.deepStrictEqual(gp("chapter/foo [bar]/"), "chapter");
+    assert.deepStrictEqual(gp("path/[a-z]"), "path");
+    assert.deepStrictEqual(gp("[a-z]"), ".");
+    assert.deepStrictEqual(gp("path/{to,from}"), "path");
+    assert.deepStrictEqual(gp("path/(to|from)"), "path");
+    assert.deepStrictEqual(
+      gp("path/(foo bar)/subdir/foo.*"),
+      "path/(foo bar)/subdir",
+    );
+    assert.deepStrictEqual(gp("path/!(to|from)"), "path");
+    assert.deepStrictEqual(gp("path/?(to|from)"), "path");
+    assert.deepStrictEqual(gp("path/+(to|from)"), "path");
+    assert.deepStrictEqual(gp("path/*(to|from)"), "path");
+    assert.deepStrictEqual(gp("path/@(to|from)"), "path");
+    assert.deepStrictEqual(gp("path/!/foo"), "path/!");
+    assert.deepStrictEqual(gp("path/?/foo"), "path/?");
+    assert.deepStrictEqual(gp("path/+/foo"), "path/+");
+    assert.deepStrictEqual(gp("path/*/foo"), "path");
+    assert.deepStrictEqual(gp("path/@/foo"), "path/@");
+    assert.deepStrictEqual(gp("path/!/foo/"), "path/!/foo");
+    assert.deepStrictEqual(gp("path/?/foo/"), "path/?/foo");
+    assert.deepStrictEqual(gp("path/+/foo/"), "path/+/foo");
+    assert.deepStrictEqual(gp("path/*/foo/"), "path");
+    assert.deepStrictEqual(gp("path/@/foo/"), "path/@/foo");
+    assert.deepStrictEqual(gp("path/**/*"), "path");
+    assert.deepStrictEqual(gp("path/**/subdir/foo.*"), "path");
+    assert.deepStrictEqual(gp("path/subdir/**/foo.js"), "path/subdir");
+    assert.deepStrictEqual(gp("path/!subdir/foo.js"), "path/!subdir");
+    assert.deepStrictEqual(gp("path/{foo,bar}/"), "path");
   });
 
-  it("should respect escaped characters", function (done) {
-    expect(gp("path/\\*\\*/subdir/foo.*")).toEqual("path/**/subdir");
-    expect(gp("path/\\[\\*\\]/subdir/foo.*")).toEqual("path/[*]/subdir");
-    expect(gp("path/\\*(a|b)/subdir/foo.*")).toEqual("path");
-    expect(gp("path/\\*/(a|b)/subdir/foo.*")).toEqual("path/*");
-    expect(gp("path/\\*\\(a\\|b\\)/subdir/foo.*")).toEqual(
+  it("should respect escaped characters", function () {
+    assert.deepStrictEqual(gp("path/\\*\\*/subdir/foo.*"), "path/**/subdir");
+    assert.deepStrictEqual(
+      gp("path/\\[\\*\\]/subdir/foo.*"),
+      "path/[*]/subdir",
+    );
+    assert.deepStrictEqual(gp("path/\\*(a|b)/subdir/foo.*"), "path");
+    assert.deepStrictEqual(gp("path/\\*/(a|b)/subdir/foo.*"), "path/*");
+    assert.deepStrictEqual(
+      gp("path/\\*\\(a\\|b\\)/subdir/foo.*"),
       "path/*(a|b)/subdir",
     );
-    expect(gp("path/\\[foo bar\\]/subdir/foo.*")).toEqual(
+    assert.deepStrictEqual(
+      gp("path/\\[foo bar\\]/subdir/foo.*"),
       "path/[foo bar]/subdir",
     );
-    expect(gp("path/\\[bar]/")).toEqual("path/[bar]");
-    expect(gp("path/\\[bar]")).toEqual("path");
-    expect(gp("[bar]")).toEqual(".");
-    expect(gp("[bar]/")).toEqual(".");
-    expect(gp("./\\[bar]")).toEqual(".");
-    expect(gp("\\[bar]/")).toEqual("[bar]");
-    expect(gp("\\!dir/*")).toEqual("!dir");
-    expect(gp("[bar\\]/")).toEqual(".");
-    expect(gp("path/foo \\[bar]/")).toEqual("path/foo [bar]");
-    expect(gp("path/\\{foo,bar}/")).toEqual("path/{foo,bar}");
-    expect(gp("\\{foo,bar}/")).toEqual("{foo,bar}");
-    expect(gp("\\{foo,bar\\}/")).toEqual("{foo,bar}");
-    expect(gp("{foo,bar\\}/")).toEqual(".");
+    assert.deepStrictEqual(gp("path/\\[bar]/"), "path/[bar]");
+    assert.deepStrictEqual(gp("path/\\[bar]"), "path");
+    assert.deepStrictEqual(gp("[bar]"), ".");
+    assert.deepStrictEqual(gp("[bar]/"), ".");
+    assert.deepStrictEqual(gp("./\\[bar]"), ".");
+    assert.deepStrictEqual(gp("\\[bar]/"), "[bar]");
+    assert.deepStrictEqual(gp("\\!dir/*"), "!dir");
+    assert.deepStrictEqual(gp("[bar\\]/"), ".");
+    assert.deepStrictEqual(gp("path/foo \\[bar]/"), "path/foo [bar]");
+    assert.deepStrictEqual(gp("path/\\{foo,bar}/"), "path/{foo,bar}");
+    assert.deepStrictEqual(gp("\\{foo,bar}/"), "{foo,bar}");
+    assert.deepStrictEqual(gp("\\{foo,bar\\}/"), "{foo,bar}");
+    assert.deepStrictEqual(gp("{foo,bar\\}/"), ".");
 
     if (isWin32) {
       // On Windows we are trying to flip backslashes foo-\\( → foo-/(
-      expect(gp("foo-\\(bar\\).md")).toEqual("foo-");
+      assert.deepStrictEqual(gp("foo-\\(bar\\).md"), "foo-");
     } else {
-      expect(gp("foo-\\(bar\\).md")).toEqual(".");
-      expect(gp("\\[bar]")).toEqual(".");
-      expect(gp("[bar\\]")).toEqual(".");
-      expect(gp("\\{foo,bar\\}")).toEqual(".");
-      expect(gp("{foo,bar\\}")).toEqual(".");
+      assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
+      assert.deepStrictEqual(gp("\\[bar]"), ".");
+      assert.deepStrictEqual(gp("[bar\\]"), ".");
+      assert.deepStrictEqual(gp("\\{foo,bar\\}"), ".");
+      assert.deepStrictEqual(gp("{foo,bar\\}"), ".");
     }
-
-    done();
   });
 
-  it("should respect glob enclosures with embedded separators", function (done) {
-    expect(gp("path/{,/,bar/baz,qux}/")).toEqual("path");
-    expect(gp("path/\\{,/,bar/baz,qux}/")).toEqual("path/{,/,bar/baz,qux}");
-    expect(gp("path/\\{,/,bar/baz,qux\\}/")).toEqual("path/{,/,bar/baz,qux}");
-    expect(gp("/{,/,bar/baz,qux}/")).toEqual("/");
-    expect(gp("/\\{,/,bar/baz,qux}/")).toEqual("/{,/,bar/baz,qux}");
-    expect(gp("{,/,bar/baz,qux}")).toEqual(".");
-    expect(gp("\\{,/,bar/baz,qux\\}")).toEqual("{,/,bar/baz,qux}");
-    expect(gp("\\{,/,bar/baz,qux}/")).toEqual("{,/,bar/baz,qux}");
-    expect(gp("path/foo[a\\/]/")).toEqual("path");
-    expect(gp("path/foo\\[a\\/]/")).toEqual("path/foo[a\\/]");
-    expect(gp("foo[a\\/]")).toEqual(".");
-    expect(gp("foo\\[a\\/]")).toEqual("foo[a\\/]");
-    expect(gp("path/(foo/bar|baz)")).toEqual("path");
-    expect(gp("path/(foo/bar|baz)/")).toEqual("path");
-    expect(gp("path/\\(foo/bar|baz)/")).toEqual("path/(foo/bar|baz)");
-    done();
+  it("should respect glob enclosures with embedded separators", function () {
+    assert.deepStrictEqual(gp("path/{,/,bar/baz,qux}/"), "path");
+    assert.deepStrictEqual(
+      gp("path/\\{,/,bar/baz,qux}/"),
+      "path/{,/,bar/baz,qux}",
+    );
+    assert.deepStrictEqual(
+      gp("path/\\{,/,bar/baz,qux\\}/"),
+      "path/{,/,bar/baz,qux}",
+    );
+    assert.deepStrictEqual(gp("/{,/,bar/baz,qux}/"), "/");
+    assert.deepStrictEqual(gp("/\\{,/,bar/baz,qux}/"), "/{,/,bar/baz,qux}");
+    assert.deepStrictEqual(gp("{,/,bar/baz,qux}"), ".");
+    assert.deepStrictEqual(gp("\\{,/,bar/baz,qux\\}"), "{,/,bar/baz,qux}");
+    assert.deepStrictEqual(gp("\\{,/,bar/baz,qux}/"), "{,/,bar/baz,qux}");
+    assert.deepStrictEqual(gp("path/foo[a\\/]/"), "path");
+    assert.deepStrictEqual(gp("path/foo\\[a\\/]/"), "path/foo[a\\/]");
+    assert.deepStrictEqual(gp("foo[a\\/]"), ".");
+    assert.deepStrictEqual(gp("foo\\[a\\/]"), "foo[a\\/]");
+    assert.deepStrictEqual(gp("path/(foo/bar|baz)"), "path");
+    assert.deepStrictEqual(gp("path/(foo/bar|baz)/"), "path");
+    assert.deepStrictEqual(gp("path/\\(foo/bar|baz)/"), "path/(foo/bar|baz)");
   });
 
-  it("should handle nested braces", function (done) {
-    expect(gp("path/{../,./,{bar,/baz\\},qux\\}/")).toEqual("path");
-    expect(gp("path/{../,./,\\{bar,/baz},qux}/")).toEqual("path");
-    expect(gp("path/\\{../,./,\\{bar,/baz\\},qux\\}/")).toEqual(
+  it("should handle nested braces", function () {
+    assert.deepStrictEqual(gp("path/{../,./,{bar,/baz\\},qux\\}/"), "path");
+    assert.deepStrictEqual(gp("path/{../,./,\\{bar,/baz},qux}/"), "path");
+    assert.deepStrictEqual(
+      gp("path/\\{../,./,\\{bar,/baz\\},qux\\}/"),
       "path/{../,./,{bar,/baz},qux}",
     );
-    expect(gp("{../,./,{bar,/baz\\},qux\\}/")).toEqual(".");
-    expect(gp("{../,./,{bar,/baz\\},qux\\}")).toEqual(".");
-    expect(gp("path/{,/,bar/{baz,qux\\}}/")).toEqual("path");
-    expect(gp("path/{,/,bar/{baz,qux}\\}/")).toEqual("path");
-    // expect(gp('path/\\{../,./,{bar,/baz},qux}/')).toEqual('path');
-
-    done();
+    assert.deepStrictEqual(gp("{../,./,{bar,/baz\\},qux\\}/"), ".");
+    assert.deepStrictEqual(gp("{../,./,{bar,/baz\\},qux\\}"), ".");
+    assert.deepStrictEqual(gp("path/{,/,bar/{baz,qux\\}}/"), "path");
+    assert.deepStrictEqual(gp("path/{,/,bar/{baz,qux}\\}/"), "path");
+    // assert.deepStrictEqual(gp('path/\\{../,./,{bar,/baz},qux}/'),'path');
   });
 
-  it("should return parent dirname from non-glob paths", function (done) {
-    expect(gp("path")).toEqual(".");
-    expect(gp("path/foo")).toEqual("path");
-    expect(gp("path/foo/")).toEqual("path/foo");
-    expect(gp("path/foo/bar.js")).toEqual("path/foo");
-
-    done();
+  it("should return parent dirname from non-glob paths", function () {
+    assert.deepStrictEqual(gp("path"), ".");
+    assert.deepStrictEqual(gp("path/foo"), "path");
+    assert.deepStrictEqual(gp("path/foo/"), "path/foo");
+    assert.deepStrictEqual(gp("path/foo/bar.js"), "path/foo");
   });
 
-  it("should respect disabled auto flip backslashes", function (done) {
-    expect(gp("foo-\\(bar\\).md", { flipBackslashes: false })).toEqual(".");
-
-    done();
+  it("should respect disabled auto flip backslashes", function () {
+    assert.deepStrictEqual(
+      gp("foo-\\(bar\\).md", { flipBackslashes: false }),
+      ".",
+    );
   });
 });
 
 describe("glob2base test patterns", function () {
-  it("should get a base name", function (done) {
-    expect(gp("js/*.js")).toEqual("js");
-
-    done();
+  it("should get a base name", function () {
+    assert.deepStrictEqual(gp("js/*.js"), "js");
   });
 
-  it("should get a base name from a nested glob", function (done) {
-    expect(gp("js/**/test/*.js")).toEqual("js");
-
-    done();
+  it("should get a base name from a nested glob", function () {
+    assert.deepStrictEqual(gp("js/**/test/*.js"), "js");
   });
 
-  it("should get a base name from a flat file", function (done) {
-    expect(gp("js/test/wow.js")).toEqual("js/test");
-    expect(gp("js/test/wow.js")).toEqual("js/test");
-
-    done();
+  it("should get a base name from a flat file", function () {
+    assert.deepStrictEqual(gp("js/test/wow.js"), "js/test");
+    assert.deepStrictEqual(gp("js/test/wow.js"), "js/test");
   });
 
-  it("should get a base name from character class pattern", function (done) {
-    expect(gp("js/t[a-z]st}/*.js")).toEqual("js");
-
-    done();
+  it("should get a base name from character class pattern", function () {
+    assert.deepStrictEqual(gp("js/t[a-z]st}/*.js"), "js");
   });
 
-  it("should get a base name from brace , expansion", function (done) {
-    expect(gp("js/{src,test}/*.js")).toEqual("js");
-
-    done();
+  it("should get a base name from brace , expansion", function () {
+    assert.deepStrictEqual(gp("js/{src,test}/*.js"), "js");
   });
 
-  it("should get a base name from brace .. expansion", function (done) {
-    expect(gp("js/test{0..9}/*.js")).toEqual("js");
-
-    done();
+  it("should get a base name from brace .. expansion", function () {
+    assert.deepStrictEqual(gp("js/test{0..9}/*.js"), "js");
   });
 
-  it("should get a base name from extglob", function (done) {
-    expect(gp("js/t+(wo|est)/*.js")).toEqual("js");
-
-    done();
+  it("should get a base name from extglob", function () {
+    assert.deepStrictEqual(gp("js/t+(wo|est)/*.js"), "js");
   });
 
-  it("should get a base name from a path with non-exglob parens", function (done) {
-    expect(gp("js/t(wo|est)/*.js")).toEqual("js");
-    expect(gp("js/t/(wo|est)/*.js")).toEqual("js/t");
-
-    done();
+  it("should get a base name from a path with non-exglob parens", function () {
+    assert.deepStrictEqual(gp("js/t(wo|est)/*.js"), "js");
+    assert.deepStrictEqual(gp("js/t/(wo|est)/*.js"), "js/t");
   });
 
-  it("should get a base name from a complex brace glob", function (done) {
-    expect(gp("lib/{components,pages}/**/{test,another}/*.txt")).toEqual("lib");
+  it("should get a base name from a complex brace glob", function () {
+    assert.deepStrictEqual(
+      gp("lib/{components,pages}/**/{test,another}/*.txt"),
+      "lib",
+    );
 
-    expect(gp("js/test/**/{images,components}/*.js")).toEqual("js/test");
+    assert.deepStrictEqual(
+      gp("js/test/**/{images,components}/*.js"),
+      "js/test",
+    );
 
-    expect(gp("ooga/{booga,sooga}/**/dooga/{eooga,fooga}")).toEqual("ooga");
-
-    done();
+    assert.deepStrictEqual(
+      gp("ooga/{booga,sooga}/**/dooga/{eooga,fooga}"),
+      "ooga",
+    );
   });
 
-  it("should not be susceptible to SNYK-JS-GLOBPARENT-1016905", function (done) {
+  it("should not be susceptible to SNYK-JS-GLOBPARENT-1016905", function () {
     // This will time out if susceptible.
     gp("{" + "/".repeat(5000));
-
-    done();
   });
 
-  it("should finish in reasonable time for '{' + '/'.repeat(n) [CVE-2021-35065]", function (done) {
-    this.timeout(1000);
-    gp("{" + "/".repeat(500000));
-    done();
-  });
+  it(
+    "should finish in reasonable time for '{' + '/'.repeat(n) [CVE-2021-35065]",
+    { timeout: 1000 },
+    function () {
+      gp("{" + "/".repeat(500000));
+    },
+  );
 
-  it("should finish in reasonable time for '{'.repeat(n)", function (done) {
-    this.timeout(1000);
-    gp("{".repeat(500000));
-    done();
-  });
+  it(
+    "should finish in reasonable time for '{'.repeat(n)",
+    { timeout: 1000 },
+    function () {
+      gp("{".repeat(500000));
+    },
+  );
 
-  it("should finish in reasonable time for '('.repeat(n)", function (done) {
-    this.timeout(1000);
-    gp("(".repeat(500000));
-    done();
-  });
+  it(
+    "should finish in reasonable time for '('.repeat(n)",
+    { timeout: 1000 },
+    function () {
+      gp("(".repeat(500000));
+    },
+  );
 
-  it("should finish in reasonable time for '/('.repeat(n) + ')'", function (done) {
-    this.timeout(1000);
-    gp("/(".repeat(500000) + ")");
-    done();
-  });
+  it(
+    "should finish in reasonable time for '/('.repeat(n) + ')'",
+    { timeout: 1000 },
+    function () {
+      gp("/(".repeat(500000) + ")");
+    },
+  );
 });
 
 if (isWin32) {
   describe("technically invalid windows globs", function () {
-    it("should manage simple globs with backslash path separator", function (done) {
-      expect(gp("C:\\path\\*.js")).toEqual("C:/path");
-
-      done();
+    it("should manage simple globs with backslash path separator", function () {
+      assert.deepStrictEqual(gp("C:\\path\\*.js"), "C:/path");
     });
   });
 }

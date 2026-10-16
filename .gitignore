@@ -33,3 +33,4 @@ node_modules
 
 # Test results
 test.xunit
+test/lcov.info
