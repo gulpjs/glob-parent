@@ -48,6 +48,10 @@ module.exports = function globParent(str, opts) {
   while (str.endsWith("/./")) {
     str = str.slice(0, -2);
   }
+  // remove last './' if only remaining is drive letter
+  if (str.endsWith(":./")) {
+    str = str.slice(0, -2);
+  }
   return str;
 };
 
