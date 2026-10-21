@@ -11,6 +11,10 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp(".*"), ".");
     assert.deepStrictEqual(gp("/.*"), "/");
     assert.deepStrictEqual(gp("/.*/"), "/");
+    assert.deepStrictEqual(gp("//"), "/");
+    assert.deepStrictEqual(gp("//*"), "/");
+    assert.deepStrictEqual(gp(".//"), "./");
+    assert.deepStrictEqual(gp(".//*"), "./");
     assert.deepStrictEqual(gp("a/.*/b"), "a");
     assert.deepStrictEqual(gp("a*/.*/b"), ".");
     assert.deepStrictEqual(gp("*/a/b/c"), ".");
@@ -159,6 +163,31 @@ describe("glob-parent", function () {
       gp("foo-\\(bar\\).md", { flipBackslashes: false }),
       ".",
     );
+  });
+
+  it("should remove tail '.' and './'", function () {
+    assert.deepStrictEqual(gp("foo/./*"), "foo/");
+    assert.deepStrictEqual(gp("foo/./././*"), "foo/");
+    assert.deepStrictEqual(gp("./././*"), "./");
+    assert.deepStrictEqual(gp("/./././*"), "/");
+
+    if (isWin32) {
+      assert.deepStrictEqual(gp("C:/foo/./*"), "C:/foo/");
+      assert.deepStrictEqual(gp("C:/foo/./././*"), "C:/foo/");
+      assert.deepStrictEqual(gp("C:/./././*"), "C:/");
+
+      assert.deepStrictEqual(gp("C:\\foo\\.\\*"), "C:/foo/");
+      assert.deepStrictEqual(gp("C:\\foo\\.\\.\\.\\*"), "C:/foo/");
+      assert.deepStrictEqual(gp("C:\\.\\.\\.\\*"), "C:/");
+
+      assert.deepStrictEqual(gp("C:foo/./*"), "C:foo/");
+      assert.deepStrictEqual(gp("C:foo/./././*"), "C:foo/");
+      assert.deepStrictEqual(gp("C:./././*"), "C:");
+
+      assert.deepStrictEqual(gp("C:foo\\.\\*"), "C:foo/");
+      assert.deepStrictEqual(gp("C:foo\\.\\.\\.\\*"), "C:foo/");
+      assert.deepStrictEqual(gp("C:.\\.\\.\\*"), "C:");
+    }
   });
 });
 

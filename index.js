@@ -35,7 +35,20 @@ module.exports = function globParent(str, opts) {
   } while (isGlobby(str));
 
   // remove escape chars and return result
-  return str.replace(escaped, "$1");
+  str = str.replace(escaped, "$1");
+
+  // replace continuous slashes to single slash
+  str = str.replace(/\/+/g, "/");
+
+  // remove last single dot
+  if (str.endsWith("/.")) {
+    str = str.slice(0, -1);
+  }
+  // remove last './'
+  while (str.endsWith("/./")) {
+    str = str.slice(0, -2);
+  }
+  return str;
 };
 
 function isEnclosure(str) {
