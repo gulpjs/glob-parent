@@ -126,12 +126,12 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("/{,/,bar/baz,qux}/"), "/");
     assert.deepStrictEqual(gp("/\\{,/,bar/baz,qux}/"), "/{,/,bar/baz,qux}");
     assert.deepStrictEqual(gp("{,/,bar/baz,qux}"), ".");
-    assert.deepStrictEqual(gp("\\{,/,bar/baz,qux\\}"), "{,/,bar/baz,qux}");
+    assert.deepStrictEqual(gp("\\{,/,bar/baz,qux\\}"), "{,/,bar");
     assert.deepStrictEqual(gp("\\{,/,bar/baz,qux}/"), "{,/,bar/baz,qux}");
     assert.deepStrictEqual(gp("path/foo[a\\/]/"), "path");
     assert.deepStrictEqual(gp("path/foo\\[a\\/]/"), "path/foo[a\\/]");
     assert.deepStrictEqual(gp("foo[a\\/]"), ".");
-    assert.deepStrictEqual(gp("foo\\[a\\/]"), "foo[a\\/]");
+    assert.deepStrictEqual(gp("foo\\[a\\/]"), "foo[a\\");
     assert.deepStrictEqual(gp("path/(foo/bar|baz)"), "path");
     assert.deepStrictEqual(gp("path/(foo/bar|baz)/"), "path");
     assert.deepStrictEqual(gp("path/\\(foo/bar|baz)/"), "path/(foo/bar|baz)");
@@ -148,7 +148,11 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("{../,./,{bar,/baz\\},qux\\}"), ".");
     assert.deepStrictEqual(gp("path/{,/,bar/{baz,qux\\}}/"), "path");
     assert.deepStrictEqual(gp("path/{,/,bar/{baz,qux}\\}/"), "path");
-    // assert.deepStrictEqual(gp('path/\\{../,./,{bar,/baz},qux}/'),'path');
+    assert.deepStrictEqual(gp("path/\\{../,./,{bar,/baz},qux}"), "path/{../,.");
+    assert.deepStrictEqual(
+      gp("path/\\{../,./,{bar,/baz},qux}/"),
+      "path/{../,.",
+    );
   });
 
   it("should return parent dirname from non-glob paths", function () {
@@ -187,6 +191,32 @@ describe("glob-parent", function () {
       assert.deepStrictEqual(gp("C:foo\\.\\*"), "C:foo/");
       assert.deepStrictEqual(gp("C:foo\\.\\.\\.\\*"), "C:foo/");
       assert.deepStrictEqual(gp("C:.\\.\\.\\*"), "C:");
+    }
+  });
+
+  it("should treat escaped brackets as normal chars", function () {
+    if (isWin32) {
+      assert.deepStrictEqual(gp("aaa\\}"), "aaa");
+      assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
+      assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
+      assert.deepStrictEqual(gp("{\\{aaa/bbb}"), ".");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc");
+      assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
+
+      var opts = { flipBackslashes: false };
+      assert.deepStrictEqual(gp("aaa\\}", opts), ".");
+      assert.deepStrictEqual(gp("\\{aaa/bbb\\}", opts), "{aaa");
+      assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}", opts), "{{aaa");
+      assert.deepStrictEqual(gp("{\\{aaa/bbb}", opts), ".");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc");
+      assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}", opts), "ccc\\/{{aaa");
+    } else {
+      assert.deepStrictEqual(gp("aaa\\}"), ".");
+      assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
+      assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
+      assert.deepStrictEqual(gp("{\\{aaa/bbb}"), ".");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc");
+      assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
     }
   });
 });
