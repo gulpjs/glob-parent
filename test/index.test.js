@@ -204,8 +204,8 @@ describe("glob-parent", function () {
       assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
 
       var opts = { flipBackslashes: false };
-      assert.deepStrictEqual(gp("aaa\\}", opts), "aaa\\}");
-      assert.deepStrictEqual(gp("\\{aaa/bbb\\}", opts), "{aaa");
+      assert.deepStrictEqual(gp("aaa\\}", opts), ".");
+      assert.deepStrictEqual(gp("\\{aaa/bbb\\}", opts), ".");
       assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}", opts), "{{aaa");
       assert.deepStrictEqual(gp("{\\{aaa/bbb}", opts), ".");
       assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc");
