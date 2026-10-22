@@ -28,7 +28,7 @@
     "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=test/lcov.info \"test/*.js\""
   },
   "dependencies": {
-    "is-glob": "^4.0.3"
+    "minimatch": "10.2.4"
   },
   "devDependencies": {
     "eslint": "10.11.0",
