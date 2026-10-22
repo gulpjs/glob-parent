@@ -4,6 +4,29 @@
 
 - eliminate ReDoS ([#36](https://github.com/gulpjs/glob-parent/issues/36)) ([f923116](https://github.com/gulpjs/glob-parent/commit/f9231168b0041fea3f8f954b3cceb56269fc6366))
 
+## [7.0.0](https://github.com/gulpjs/glob-parent/compare/v6.0.2...v7.0.0) (2026-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Treat escaped enclosures as normal characters ([#76](https://github.com/gulpjs/glob-parent/issues/76))
+* Collapse trailing `.` and `./` ([#75](https://github.com/gulpjs/glob-parent/issues/75))
+* Normalize repository, dropping Node <22.15.0 ([#70](https://github.com/gulpjs/glob-parent/issues/70))
+
+### Features
+
+* Collapse trailing `.` and `./` ([#75](https://github.com/gulpjs/glob-parent/issues/75)) ([ef05e8d](https://github.com/gulpjs/glob-parent/commit/ef05e8d903ef34760ab690b9b004d2ca002bef15))
+
+
+### Bug Fixes
+
+* Treat escaped enclosures as normal characters ([#76](https://github.com/gulpjs/glob-parent/issues/76)) ([e6aecfc](https://github.com/gulpjs/glob-parent/commit/e6aecfc257ba6d1bd863b7e1066cf7aa3adc4b0b))
+
+
+### Miscellaneous Chores
+
+* Normalize repository, dropping Node &lt;22.15.0 ([#70](https://github.com/gulpjs/glob-parent/issues/70)) ([bef1409](https://github.com/gulpjs/glob-parent/commit/bef14096cb08e845ee6e74609de6727be18c42bc))
+
 ### [6.0.2](https://www.github.com/gulpjs/glob-parent/compare/v6.0.1...v6.0.2) (2021-09-29)
 
 ### Bug Fixes
