@@ -142,14 +142,20 @@ describe("glob-parent", function () {
 
   it("should handle nested braces", function () {
     // both closing } are escaped and there is a trailing slash
-    assert.deepStrictEqual(gp("path/{../,./,{bar,/baz\\},qux\\}/"), "path/{../,./,{bar,/baz},qux}");
+    assert.deepStrictEqual(
+      gp("path/{../,./,{bar,/baz\\},qux\\}/"),
+      "path/{../,./,{bar,/baz},qux}",
+    );
     assert.deepStrictEqual(gp("path/{../,./,\\{bar,/baz},qux}/"), "path");
     assert.deepStrictEqual(
       gp("path/\\{../,./,\\{bar,/baz\\},qux\\}/"),
       "path/{../,./,{bar,/baz},qux}",
     );
     // both closing } are escaped and there is a trailing slash
-    assert.deepStrictEqual(gp("{../,./,{bar,/baz\\},qux\\}/"), "{../,./,{bar,/baz},qux}");
+    assert.deepStrictEqual(
+      gp("{../,./,{bar,/baz\\},qux\\}/"),
+      "{../,./,{bar,/baz},qux}",
+    );
     // both closing } are escaped and there is NO trailing slash
     assert.deepStrictEqual(gp("{../,./,{bar,/baz\\},qux\\}"), "{../,./,{bar,");
     // only one closing } is escaped so the tightest match is {baz,qux\\}}
