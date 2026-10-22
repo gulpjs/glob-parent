@@ -1,12 +1,13 @@
 "use strict";
 
-var isGlob = require("is-glob");
-var pathPosixDirname = require("path").posix.dirname;
-var isWin32 = require("os").platform() === "win32";
+const os = require("node:os");
+const path = require("node:path");
 
-var slash = "/";
-var backslash = /\\/g;
-var escaped = /\\([!*?|[\](){}])/g;
+const { Minimatch } = require("minimatch");
+const isWin32 = os.platform() === "win32";
+
+const slash = "/";
+const backslash = /\\/g;
 
 /**
  * @param {string} str
@@ -14,103 +15,64 @@ var escaped = /\\([!*?|[\](){}])/g;
  * @param {boolean} [opts.flipBackslashes=true]
  */
 module.exports = function globParent(str, opts) {
-  var options = Object.assign({ flipBackslashes: true }, opts);
+  const options = Object.assign({ flipBackslashes: true }, opts);
 
   // flip windows path separators
-  if (options.flipBackslashes && isWin32 && str.indexOf(slash) < 0) {
+  if (options.flipBackslashes && isWin32 && !str.includes(slash)) {
     str = str.replace(backslash, slash);
   }
 
-  // special case for strings ending in enclosure containing path separator
-  if (isEnclosure(str)) {
-    str += slash;
+  const parsed = path.parse(str);
+
+  const mm = new Minimatch(str, { magicalBraces: true, optimizationLevel: 0 });
+
+  const longest = Math.max(...mm.set.map((segments) => segments.length));
+  const segmentSets = Array.from({ length: longest }, () => new Set());
+
+  const matchingSegments = [];
+  for (const [idx, set] of segmentSets.entries()) {
+    // Add the separator between the last segment and this segment
+    // which ensures the path will have a trailing slash once we find
+    // the glob magic
+    if (idx !== 0) {
+      matchingSegments.push(slash);
+    }
+
+    // Compare the same index from each minimatch set
+    for (const segments of mm.set) {
+      if (typeof segments[idx] === "string") {
+        set.add(segments[idx]);
+      }
+    }
+
+    // If there is not exactly 1 item, that means the patterns diverged
+    if (set.size !== 1) {
+      break;
+    }
+
+    matchingSegments.push(...set.values());
   }
+
+  let matchedStr = matchingSegments.join("");
 
   // preserves full path in case of trailing path separator
-  str += "a";
+  matchedStr += "a";
 
-  // remove path parts that are globby
-  do {
-    str = pathPosixDirname(str);
-  } while (isGlobby(str));
-
-  // remove escape chars and return result
-  str = str.replace(escaped, "$1");
-
-  // replace continuous slashes to single slash
-  str = str.replace(/\/+/g, "/");
+  matchedStr = path.posix.dirname(matchedStr);
 
   // remove last single dot
-  if (str.endsWith("/.")) {
-    str = str.slice(0, -1);
+  if (matchedStr.endsWith("/.")) {
+    matchedStr = matchedStr.slice(0, -1);
   }
   // remove last './'
-  while (str.endsWith("/./")) {
-    str = str.slice(0, -2);
+  while (matchedStr.endsWith("/./")) {
+    matchedStr = matchedStr.slice(0, -2);
   }
   // remove last './' if only remaining is drive letter
-  if (str.endsWith(":./")) {
-    str = str.slice(0, -2);
+  if (matchedStr.endsWith(":./")) {
+    matchedStr = matchedStr.slice(0, -2);
   }
-  return str;
+
+  // If the `matchedStr` is empty string, fallback to path root, if that is also empty, use `.`
+  return matchedStr || parsed.root || ".";
 };
-
-function isEnclosure(str) {
-  var lastChar = str.slice(-1);
-
-  var enclosureStart;
-  switch (lastChar) {
-    case "}":
-      enclosureStart = "{";
-      break;
-    case "]":
-      enclosureStart = "[";
-      break;
-    default:
-      return false;
-  }
-
-  var enclosureIndex = str.length - 1;
-  var foundIndex = findPreviousNonBackslashCharFrom(str, enclosureIndex - 1);
-  if ((enclosureIndex - foundIndex) % 2 === 0) {
-    // Last enclosure is escaped.
-    return false;
-  }
-
-  while (foundIndex >= 0) {
-    enclosureIndex = str.lastIndexOf(enclosureStart, foundIndex);
-    if (enclosureIndex < 0) {
-      return false;
-    }
-
-    foundIndex = findPreviousNonBackslashCharFrom(str, enclosureIndex - 1);
-    if ((enclosureIndex - foundIndex) % 2 === 0) {
-      // Enclosure is escaped.
-      return false;
-    }
-  }
-
-  return str.slice(enclosureIndex + 1, -1).includes(slash);
-}
-
-function findPreviousNonBackslashCharFrom(str, startIndex) {
-  for (var i = startIndex; i >= 0; i--) {
-    if (str[i] !== "\\") {
-      return i;
-    }
-  }
-  return -1;
-}
-
-function isGlobby(str) {
-  if (/\([^()]+$/.test(str)) {
-    return true;
-  }
-  if (str[0] === "{" || str[0] === "[") {
-    return true;
-  }
-  if (/[^\\][{[]/.test(str)) {
-    return true;
-  }
-  return isGlob(str);
-}
