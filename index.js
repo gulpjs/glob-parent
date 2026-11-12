@@ -44,6 +44,10 @@ module.exports = function globParent(str) {
   // preserves full path in case of trailing path separator
   matchedStr += "a";
 
+  // We have to use platform-dependent `path.dirname` because only the Windows
+  // one knows how to handle drive letter roots (and presumably UNC volumes)
+  // Luckily, if you provided it with a path using `/` as the path separators,
+  // it does not change them, so our Minimatch iterator always uses that separator
   matchedStr = path.dirname(matchedStr);
 
   // remove last single dot
