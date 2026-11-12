@@ -1,6 +1,6 @@
 "use strict";
 
-const os = require("node:os")
+const os = require("node:os");
 const { describe, it } = require("node:test");
 
 const gp = require("../");
@@ -91,10 +91,7 @@ describe("glob-parent", () => {
 
   it("should respect escaped characters", (t) => {
     t.assert.strictEqual(gp("path/\\*\\*/subdir/foo.*"), "path/**/subdir");
-    t.assert.strictEqual(
-      gp("path/\\[\\*\\]/subdir/foo.*"),
-      "path/[*]/subdir",
-    );
+    t.assert.strictEqual(gp("path/\\[\\*\\]/subdir/foo.*"), "path/[*]/subdir");
     // Before minimatch, this escape was not respected
     t.assert.strictEqual(
       gp("path/\\*(a|b)/subdir/foo.*"),
@@ -196,10 +193,7 @@ describe("glob-parent", () => {
     // Note: Only one closing } is escaped so the tighest match is {baz,qux}
     t.assert.strictEqual(gp("path/{,/,bar/{baz,qux}\\}/"), "path/{,/,bar");
     t.assert.strictEqual(gp("path/\\{../,./,{bar,/baz},qux}"), "path/{../,.");
-    t.assert.strictEqual(
-      gp("path/\\{../,./,{bar,/baz},qux}/"),
-      "path/{../,.",
-    );
+    t.assert.strictEqual(gp("path/\\{../,./,{bar,/baz},qux}/"), "path/{../,.");
   });
 
   it("should return parent dirname from non-glob paths", (t) => {
@@ -226,22 +220,26 @@ describe("glob-parent", () => {
     t.assert.strictEqual(gp("C:./././*"), "C:");
   });
 
-  it("(win) treat escaped brackets as normal chars", { skip: !isWin32 }, (t) => {
-    t.assert.strictEqual(gp("aaa\\}"), ".");
-    t.assert.strictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
-    t.assert.strictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
-    // Before minimatch, a pattern that matched exactly one item was still determined as magic
-    t.assert.strictEqual(gp("{\\{aaa/bbb}"), "{{aaa");
-    t.assert.strictEqual(gp("{\\{aaa/bbb}/"), "{{aaa/bbb}");
-    t.assert.strictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
-    t.assert.strictEqual(gp("{\\{aaa/bbb,ccc}/"), ".");
-    // Before minimatch, a pattern that matched exactly one item was still determined as magic
-    t.assert.strictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc/{{aaa");
-    t.assert.strictEqual(gp("ccc/{\\{aaa/bbb}/"), "ccc/{{aaa/bbb}");
-    t.assert.strictEqual(gp("ccc/{\\{aaa/bbb,ccc}"), "ccc");
-    t.assert.strictEqual(gp("ccc/{\\{aaa/bbb,ccc}/"), "ccc");
-    t.assert.strictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
-  });
+  it(
+    "(win) treat escaped brackets as normal chars",
+    { skip: !isWin32 },
+    (t) => {
+      t.assert.strictEqual(gp("aaa\\}"), ".");
+      t.assert.strictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
+      t.assert.strictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      t.assert.strictEqual(gp("{\\{aaa/bbb}"), "{{aaa");
+      t.assert.strictEqual(gp("{\\{aaa/bbb}/"), "{{aaa/bbb}");
+      t.assert.strictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
+      t.assert.strictEqual(gp("{\\{aaa/bbb,ccc}/"), ".");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      t.assert.strictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc/{{aaa");
+      t.assert.strictEqual(gp("ccc/{\\{aaa/bbb}/"), "ccc/{{aaa/bbb}");
+      t.assert.strictEqual(gp("ccc/{\\{aaa/bbb,ccc}"), "ccc");
+      t.assert.strictEqual(gp("ccc/{\\{aaa/bbb,ccc}/"), "ccc");
+      t.assert.strictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
+    },
+  );
 
   it("(nix) treat escaped brackets as normal chars", { skip: isWin32 }, (t) => {
     t.assert.strictEqual(gp("aaa\\}"), ".");
@@ -300,10 +298,7 @@ describe("glob2base test patterns", () => {
       "lib",
     );
 
-    t.assert.strictEqual(
-      gp("js/test/**/{images,components}/*.js"),
-      "js/test",
-    );
+    t.assert.strictEqual(gp("js/test/**/{images,components}/*.js"), "js/test");
 
     t.assert.strictEqual(
       gp("ooga/{booga,sooga}/**/dooga/{eooga,fooga}"),
