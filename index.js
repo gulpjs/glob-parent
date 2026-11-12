@@ -22,7 +22,7 @@ module.exports = function globParent(str, opts) {
     str = str.replace(backslash, slash);
   }
 
-  const mm = new Minimatch(str, { magicalBraces: true, optimizationLevel: 0 });
+  const mm = new Minimatch(str, { optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
   const segmentSets = Array.from({ length: longest }, () => new Set());
