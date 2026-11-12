@@ -168,7 +168,8 @@ describe("glob-parent", function () {
   });
 
   it("should handle nested braces", function () {
-    // both closing } are escaped and there is a trailing slash
+    // Before minimatch, escapes on both closing } were not respected
+    // Note: This has a trailing slash
     assert.deepStrictEqual(
       gp("path/{../,./,{bar,/baz\\},qux\\}/"),
       "path/{../,./,{bar,/baz},qux}",
@@ -178,16 +179,20 @@ describe("glob-parent", function () {
       gp("path/\\{../,./,\\{bar,/baz\\},qux\\}/"),
       "path/{../,./,{bar,/baz},qux}",
     );
-    // both closing } are escaped and there is a trailing slash
+    // Before minimatch, escapes on both closing } were not respected
+    // Note: This has a trailing slash
     assert.deepStrictEqual(
       gp("{../,./,{bar,/baz\\},qux\\}/"),
       "{../,./,{bar,/baz},qux}",
     );
-    // both closing } are escaped and there is NO trailing slash
+    // Before minimatch, escapes on both closing } were not respected
+    // Note: This has NO trailing slash
     assert.deepStrictEqual(gp("{../,./,{bar,/baz\\},qux\\}"), "{../,./,{bar,");
-    // only one closing } is escaped so the tightest match is {baz,qux\\}}
+    // Before minimatch, the escape was not respected
+    // Note: Only one closing } is escaped so the tightest match is {baz,qux\\}}
     assert.deepStrictEqual(gp("path/{,/,bar/{baz,qux\\}}/"), "path/{,/,bar");
-    // only one closing } is escaped so the tighest match is {baz,qux}
+    // Before minimatch, the escape was not respected
+    // Note: Only one closing } is escaped so the tighest match is {baz,qux}
     assert.deepStrictEqual(gp("path/{,/,bar/{baz,qux}\\}/"), "path/{,/,bar");
     assert.deepStrictEqual(gp("path/\\{../,./,{bar,/baz},qux}"), "path/{../,.");
     assert.deepStrictEqual(
@@ -255,9 +260,10 @@ describe("glob-parent", function () {
       assert.deepStrictEqual(gp("aaa\\}"), ".");
       assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
       assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
-      // TODO: These seem to have magic but they don't expand to more than one set due to only one pattern in the braces
-      // assert.deepStrictEqual(gp("{\\{aaa/bbb}"), ".");
-      // assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ddd}"), "ccc");
       assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
     }
   });
@@ -294,9 +300,12 @@ describe("glob2base test patterns", function () {
   });
 
   it("should get a base name from a path with non-exglob parens", function () {
-    // TODO: parens are unsupported, need to use []
-    // assert.deepStrictEqual(gp("js/t(wo|est)/*.js"), "js");
-    // assert.deepStrictEqual(gp("js/t/(wo|est)/*.js"), "js/t");
+    // Before minimatch, this invalid extglob were accepted, but they work if properly specified
+    assert.deepStrictEqual(gp("js/t(wo|est)/*.js"), "js/t(wo|est)");
+    assert.deepStrictEqual(gp("js/t+(wo|est)/*.js"), "js");
+    // Before minimatch, this invalid extglob were accepted, but they work if properly specified
+    assert.deepStrictEqual(gp("js/t/(wo|est)/*.js"), "js/t/(wo|est)");
+    assert.deepStrictEqual(gp("js/t/+(wo|est)/*.js"), "js/t");
   });
 
   it("should get a base name from a complex brace glob", function () {
