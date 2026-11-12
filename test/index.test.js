@@ -261,7 +261,7 @@ describe("glob-parent", function () {
       // Before minimatch, a pattern that matched exactly one item was still determined as magic
       // Note: The escape would be flipped as the `/` separator
       assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc/{{aaa");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/"), "ccc/{{aaa/bbb}}");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/"), "ccc/{{aaa/bbb}");
       assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}"), "ccc");
       assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}/"), "ccc");
       assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
