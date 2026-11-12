@@ -79,8 +79,10 @@ describe("glob-parent", function () {
       gp("path/\\[\\*\\]/subdir/foo.*"),
       "path/[*]/subdir",
     );
-    // assert.deepStrictEqual(gp("path/\\*(a|b)/subdir/foo.*"), "path");
-    // assert.deepStrictEqual(gp("path/\\*/(a|b)/subdir/foo.*"), "path/*");
+    // Previously, this escape was not respected
+    assert.deepStrictEqual(gp("path/\\*(a|b)/subdir/foo.*"), "path/*(a|b)/subdir");
+    // Previously, parens, like `(a|b)` were accepted, but those should be brackets, like `[a|b]`
+    assert.deepStrictEqual(gp("path/\\*/[a|b]/subdir/foo.*"), "path/*");
     assert.deepStrictEqual(
       gp("path/\\*\\(a\\|b\\)/subdir/foo.*"),
       "path/*(a|b)/subdir",
