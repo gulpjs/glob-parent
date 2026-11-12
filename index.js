@@ -13,11 +13,6 @@ const backslash = /\\/g;
  * @param {string} str
  */
 module.exports = function globParent(str) {
-  // flip windows path separators
-  if (isWin32 && !str.includes(slash)) {
-    str = str.replace(backslash, slash);
-  }
-
   const mm = new Minimatch(str, { optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
