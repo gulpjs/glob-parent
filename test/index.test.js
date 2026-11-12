@@ -34,9 +34,24 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("{a,b}"), ".");
     assert.deepStrictEqual(gp("/{a,b}"), "/");
     assert.deepStrictEqual(gp("/{a,b}/"), "/");
+    // No trailing seperator, so base is discarded
     assert.deepStrictEqual(gp("(a|b)"), ".");
+    // Not a properly specified exglob
+    assert.deepStrictEqual(gp("(a|b)/"), "(a|b)");
+    // Properly specified extglob
+    assert.deepStrictEqual(gp("?(a|b)/"), ".");
+    // No trailing seperator, so base is discarded
     assert.deepStrictEqual(gp("/(a|b)"), "/");
+    // Not a properly specified exglob
+    assert.deepStrictEqual(gp("/(a|b)/"), "/(a|b)");
+    // Properly specified extglob
+    assert.deepStrictEqual(gp("/+(a|b)/"), "/");
+    // No trailing seperator, so base is discarded
     assert.deepStrictEqual(gp("./(a|b)"), ".");
+    // Not a properly specified exglob
+    assert.deepStrictEqual(gp("./(a|b)/"), "./(a|b)");
+    // Properly specified extglob
+    assert.deepStrictEqual(gp("./*(a|b)/"), ".");
     assert.deepStrictEqual(gp("a/(b c)"), "a"); // not an extglob
     assert.deepStrictEqual(gp("a/(b c)/"), "a/(b c)"); // not an extglob
     assert.deepStrictEqual(gp("a/(b c)/d"), "a/(b c)"); // not an extglob
@@ -79,9 +94,11 @@ describe("glob-parent", function () {
       gp("path/\\[\\*\\]/subdir/foo.*"),
       "path/[*]/subdir",
     );
-    // Previously, this escape was not respected
+    // Before minimatch, this escape was not respected
     assert.deepStrictEqual(gp("path/\\*(a|b)/subdir/foo.*"), "path/*(a|b)/subdir");
-    // Previously, parens, like `(a|b)` were accepted, but those should be brackets, like `[a|b]`
+    // Before minimatch, parens were accepted but are an invalid extglob
+    assert.deepStrictEqual(gp("path/\\*/(a|b)/subdir/foo.*"), "path/*/(a|b)/subdir");
+    // Instead, they should be brackets, like `[a|b]`
     assert.deepStrictEqual(gp("path/\\*/[a|b]/subdir/foo.*"), "path/*");
     assert.deepStrictEqual(
       gp("path/\\*\\(a\\|b\\)/subdir/foo.*"),
@@ -98,12 +115,14 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("./\\[bar]"), ".");
     assert.deepStrictEqual(gp("\\[bar]/"), "[bar]");
     assert.deepStrictEqual(gp("\\!dir/*"), "!dir");
-    // assert.deepStrictEqual(gp("[bar\\]/"), ".");
+    // Before minimatch, this escape was not respected
+    assert.deepStrictEqual(gp("[bar\\]/"), "[bar]");
     assert.deepStrictEqual(gp("path/foo \\[bar]/"), "path/foo [bar]");
     assert.deepStrictEqual(gp("path/\\{foo,bar}/"), "path/{foo,bar}");
     assert.deepStrictEqual(gp("\\{foo,bar}/"), "{foo,bar}");
     assert.deepStrictEqual(gp("\\{foo,bar\\}/"), "{foo,bar}");
-    // assert.deepStrictEqual(gp("{foo,bar\\}/"), ".");
+    // Before minimatch, this escape was not respected
+    assert.deepStrictEqual(gp("{foo,bar\\}/"), "{foo,bar}");
 
     if (isWin32) {
       // On Windows we are trying to flip backslashes foo-\\( → foo-/(
@@ -133,12 +152,18 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("{,/,bar/baz,qux}"), ".");
     assert.deepStrictEqual(gp("\\{,/,bar/baz,qux\\}"), "{,/,bar");
     assert.deepStrictEqual(gp("\\{,/,bar/baz,qux}/"), "{,/,bar/baz,qux}");
-    // assert.deepStrictEqual(gp("path/foo[a\\/]/"), "path");
+    // Before minimatch, an escaped `/` was accepted within brackets, but minimatch does not accept that
+    assert.deepStrictEqual(gp("path/foo[a\\/]/"), "path/foo[a\\/]");
     assert.deepStrictEqual(gp("path/foo\\[a\\/]/"), "path/foo[a\\/]");
-    // assert.deepStrictEqual(gp("foo[a\\/]"), ".");
+    // Before minimatch, an escaped `/` was accepted within brackets, but minimatch does not accept that
+    assert.deepStrictEqual(gp("foo[a\\/]"), "foo[a\\");
     assert.deepStrictEqual(gp("foo\\[a\\/]"), "foo[a\\");
-    // assert.deepStrictEqual(gp("path/(foo/bar|baz)"), "path");
-    // assert.deepStrictEqual(gp("path/(foo/bar|baz)/"), "path");
+    // This wasn't a properly specified extglob, but works with a preceding extglob character
+    assert.deepStrictEqual(gp("path/(foo/bar|baz)"), "path/(foo");
+    assert.deepStrictEqual(gp("path/?(foo/bar|baz)"), "path");
+    // This wasn't a properly specified extglob, but works with a preceding extglob character
+    assert.deepStrictEqual(gp("path/(foo/bar|baz)/"), "path/(foo/bar|baz)");
+    assert.deepStrictEqual(gp("path/?(foo/bar|baz)/"), "path");
     assert.deepStrictEqual(gp("path/\\(foo/bar|baz)/"), "path/(foo/bar|baz)");
   });
 
