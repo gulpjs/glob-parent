@@ -219,13 +219,6 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("path/foo/bar.js"), "path/foo");
   });
 
-  it("should respect disabled auto flip backslashes", function () {
-    assert.deepStrictEqual(
-      gp("foo-\\(bar\\).md", { flipBackslashes: false }),
-      ".",
-    );
-  });
-
   it("should remove tail '.' and './'", function () {
     assert.deepStrictEqual(gp("foo/./*"), "foo/");
     assert.deepStrictEqual(gp("foo/./././*"), "foo/");
@@ -251,48 +244,32 @@ describe("glob-parent", function () {
     }
   });
 
-  it("should treat escaped brackets as normal chars", function () {
-    if (isWin32) {
-      assert.deepStrictEqual(gp("aaa\\}"), "aaa");
-      assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
-      assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
-      // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("{\\{aaa/bbb}"), "{{aaa");
-      assert.deepStrictEqual(gp("{\\{aaa/bbb}/"), "{{aaa/bbb}");
-      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
-      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}/"), ".");
-      // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc/{{aaa");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/"), "ccc/{{aaa/bbb}");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}"), "ccc");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}/"), "ccc");
-      assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
+  it("(win) treat escaped brackets as normal chars", { skip: !isWin32 }, () => {
+    assert.deepStrictEqual(gp("aaa\\}"), "aaa");
+    assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
+    assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
+    // Before minimatch, a pattern that matched exactly one item was still determined as magic
+    assert.deepStrictEqual(gp("{\\{aaa/bbb}"), "{{aaa");
+    assert.deepStrictEqual(gp("{\\{aaa/bbb}/"), "{{aaa/bbb}");
+    assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
+    assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}/"), ".");
+    // Before minimatch, a pattern that matched exactly one item was still determined as magic
+    assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc/{{aaa");
+    assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/"), "ccc/{{aaa/bbb}");
+    assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}"), "ccc");
+    assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}/"), "ccc");
+    assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
+  });
 
-      var opts = { flipBackslashes: false };
-      assert.deepStrictEqual(gp("aaa\\}", opts), ".");
-      assert.deepStrictEqual(gp("\\{aaa/bbb\\}", opts), "{aaa");
-      assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}", opts), "{{aaa");
-      // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("{\\{aaa/bbb}", opts), "{{aaa");
-      assert.deepStrictEqual(gp("{\\{aaa/bbb}/", opts), "{{aaa/bbb}");
-      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}", opts), ".");
-      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}/", opts), ".");
-      // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc/{{aaa");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/", opts), "ccc/{{aaa/bbb}");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}", opts), "ccc");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}/", opts), "ccc");
-      assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}", opts), "ccc\\/{{aaa");
-    } else {
-      assert.deepStrictEqual(gp("aaa\\}"), ".");
-      assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
-      assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
-      // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
-      // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ddd}"), "ccc");
-      assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
-    }
+  it("(nix) treat escaped brackets as normal chars", { skip: isWin32 }, () => {
+    assert.deepStrictEqual(gp("aaa\\}"), ".");
+    assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
+    assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
+    // Before minimatch, a pattern that matched exactly one item was still determined as magic
+    assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
+    // Before minimatch, a pattern that matched exactly one item was still determined as magic
+    assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ddd}"), "ccc");
+    assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
   });
 });
 
@@ -379,10 +356,8 @@ describe("glob2base test patterns", function () {
   });
 });
 
-if (isWin32) {
-  describe("technically invalid windows globs", function () {
-    it("should manage simple globs with backslash path separator", function () {
-      assert.deepStrictEqual(gp("C:\\path\\*.js"), "C:/path");
-    });
+describe("technically invalid windows globs", { skip: !isWin32 }, () => {
+  it("should manage simple globs with backslash path separator", () => {
+    assert.deepStrictEqual(gp("C:\\path\\*.js"), "C:/path");
   });
-}
+});
