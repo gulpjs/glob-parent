@@ -125,9 +125,10 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("{foo,bar\\}/"), "{foo,bar}");
 
     if (isWin32) {
-      // On Windows we are trying to flip backslashes foo-\\( → foo-/(
-      // TODO: Something related to parens when they need a prefix?
-      // assert.deepStrictEqual(gp("foo-\\(bar\\).md"), "foo-");
+      // On Windows we are trying to flip backslashes foo-\\[ → foo-/[
+      // Before minimatch, an invalid extglob was accepted, but the
+      // proper definition should contain brackets
+      assert.deepStrictEqual(gp("foo-\\[bar\\].md"), "foo-");
     } else {
       assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
       assert.deepStrictEqual(gp("\\[bar]"), ".");
