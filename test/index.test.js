@@ -95,9 +95,15 @@ describe("glob-parent", function () {
       "path/[*]/subdir",
     );
     // Before minimatch, this escape was not respected
-    assert.deepStrictEqual(gp("path/\\*(a|b)/subdir/foo.*"), "path/*(a|b)/subdir");
+    assert.deepStrictEqual(
+      gp("path/\\*(a|b)/subdir/foo.*"),
+      "path/*(a|b)/subdir",
+    );
     // Before minimatch, parens were accepted but are an invalid extglob
-    assert.deepStrictEqual(gp("path/\\*/(a|b)/subdir/foo.*"), "path/*/(a|b)/subdir");
+    assert.deepStrictEqual(
+      gp("path/\\*/(a|b)/subdir/foo.*"),
+      "path/*/(a|b)/subdir",
+    );
     // Instead, they should be brackets, like `[a|b]`
     assert.deepStrictEqual(gp("path/\\*/[a|b]/subdir/foo.*"), "path/*");
     assert.deepStrictEqual(
