@@ -1,27 +1,15 @@
 "use strict";
 
-const os = require("node:os");
 const path = require("node:path");
 
 const { Minimatch } = require("minimatch");
-const isWin32 = os.platform() === "win32";
 
 const slash = "/";
-const backslash = /\\/g;
 
 /**
  * @param {string} str
- * @param {Object} opts
- * @param {boolean} [opts.flipBackslashes=true]
  */
-module.exports = function globParent(str, opts) {
-  const options = Object.assign({ flipBackslashes: true }, opts);
-
-  // flip windows path separators
-  if (options.flipBackslashes && isWin32 && !str.includes(slash)) {
-    str = str.replace(backslash, slash);
-  }
-
+module.exports = function globParent(str) {
   const mm = new Minimatch(str, { optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
