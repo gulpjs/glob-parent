@@ -38,6 +38,7 @@ module.exports = function globParent(str) {
 
     matchingSegments.push(...set.values());
   }
+  console.log(mm.set, matchingSegments)
 
   let matchedStr = matchingSegments.join("");
 

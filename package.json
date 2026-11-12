@@ -25,7 +25,7 @@
     "format-check": "prettier . --check",
     "format-write": "prettier . --write",
     "lint": "eslint .",
-    "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=test/lcov.info \"test/*.js\""
+    "test": "node --test --test-only --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=test/lcov.info \"test/*.js\""
   },
   "dependencies": {
     "minimatch": "10.2.6"
