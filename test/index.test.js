@@ -378,7 +378,7 @@ describe("windows path with drive or UNC volume", { skip: !isWin32 }, () => {
     t.assert.strictEqual(gp("//?/C:/"), "//?/C:/");
     t.assert.strictEqual(gp("//?/C:/."), "//?/C:/");
     t.assert.strictEqual(gp("//?/C:/*"), "//?/C:/");
-    t.assert.strictEqual(gp("//?/C:/./*"), "//?/C:/.");
+    t.assert.strictEqual(gp("//?/C:/./*"), "//?/C:/");
     t.assert.strictEqual(gp("//?/C://"), "//?/C:/");
     t.assert.strictEqual(gp("//?/C://*"), "//?/C:/");
     t.assert.strictEqual(gp("//?/C:/path/*.js"), "//?/C:/path");
