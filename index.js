@@ -22,8 +22,6 @@ module.exports = function globParent(str, opts) {
     str = str.replace(backslash, slash);
   }
 
-  const parsed = path.parse(str);
-
   const mm = new Minimatch(str, { magicalBraces: true, optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
@@ -73,6 +71,5 @@ module.exports = function globParent(str, opts) {
     matchedStr = matchedStr.slice(0, -2);
   }
 
-  // If the `matchedStr` is empty string, fallback to path root, if that is also empty, use `.`
-  return matchedStr || parsed.root || ".";
+  return matchedStr;
 };
