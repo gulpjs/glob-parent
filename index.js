@@ -44,7 +44,7 @@ module.exports = function globParent(str) {
   // preserves full path in case of trailing path separator
   matchedStr += "a";
 
-  matchedStr = path.posix.dirname(matchedStr);
+  matchedStr = path.dirname(matchedStr);
 
   // remove last single dot
   if (matchedStr.endsWith("/.")) {
