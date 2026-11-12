@@ -134,7 +134,7 @@ describe("glob-parent", function () {
       // On Windows we are trying to flip backslashes foo-\\[ → foo-/[
       // Before minimatch, an invalid extglob was accepted, but the
       // proper definition should contain brackets
-      assert.deepStrictEqual(gp("foo-\\[bar\\].md"), "foo-");
+      assert.deepStrictEqual(gp("foo-\\[bar].md"), "foo-");
     } else {
       assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
       assert.deepStrictEqual(gp("\\[bar]"), ".");
