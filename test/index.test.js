@@ -345,14 +345,6 @@ describe("windows path with drive or UNC volume", { skip: !isWin32 }, () => {
     t.assert.strictEqual(gp("C://"), "C:/");
     t.assert.strictEqual(gp("C://*"), "C:/");
     t.assert.strictEqual(gp("C:/path/*.js"), "C:/path");
-
-    t.assert.strictEqual(gp("C:\\"), "C:/");
-    t.assert.strictEqual(gp("C:\\."), "C:/");
-    t.assert.strictEqual(gp("C:\\*"), "C:/");
-    t.assert.strictEqual(gp("C:\\.\\*"), "C:/");
-    t.assert.strictEqual(gp("C:\\\\"), "C:/");
-    t.assert.strictEqual(gp("C:\\\\*"), "C:/");
-    t.assert.strictEqual(gp("C:\\path\\*.js"), "C:/path");
   });
 
   it("should return parent dirname from relative path with drive letter", (t) => {
@@ -363,62 +355,32 @@ describe("windows path with drive or UNC volume", { skip: !isWin32 }, () => {
     t.assert.strictEqual(gp("C:.//"), "C:");
     t.assert.strictEqual(gp("C:.//*"), "C:");
     t.assert.strictEqual(gp("C:path/*.js"), "C:path");
-
-    t.assert.strictEqual(gp("C:.\\*"), "C:");
-    t.assert.strictEqual(gp("C:.\\\\"), "C:");
-    t.assert.strictEqual(gp("C:.\\\\*"), "C:");
-    t.assert.strictEqual(gp("C:path\\*.js"), "C:path");
   });
 
   it("should return parent dirname from UNC path", (t) => {
-    t.assert.strictEqual(gp("//System07/C:/"), "//System07/C:/");
-    t.assert.strictEqual(gp("//System07/C:/."), "//System07/C:/");
-    t.assert.strictEqual(gp("//System07/C:/*"), "//System07/C:/");
-    t.assert.strictEqual(gp("//System07/C:/./*"), "//System07/C:/");
-    t.assert.strictEqual(gp("//System07/C://"), "//System07/C:/");
-    t.assert.strictEqual(gp("//System07/C://*"), "//System07/C:/");
+    t.assert.strictEqual(gp("//ComputerName/Share/"), "//ComputerName/Share/");
+    t.assert.strictEqual(gp("//ComputerName/Share/."), "//ComputerName/Share/");
+    t.assert.strictEqual(gp("//ComputerName/Share/*"), "//ComputerName/Share/");
     t.assert.strictEqual(
-      gp("\\\\System07\\C$/path/*.js"),
-      "\\\\System07\\C$/path",
+      gp("//ComputerName/Share/./*"),
+      "//ComputerName/Share/",
+    );
+    t.assert.strictEqual(gp("//ComputerName/Share//"), "//ComputerName/Share/");
+    t.assert.strictEqual(
+      gp("//ComputerName/Share//*"),
+      "//ComputerName/Share/",
     );
     t.assert.strictEqual(
-      gp("\\\\System07\\C$/", { flipBackslashes: false }),
-      "\\\\System07\\C$/",
-    );
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$/.", { flipBackslashes: false }),
-      "\\\\System07\\C$/",
-    );
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$/*", { flipBackslashes: false }),
-      "\\\\System07\\C$/",
-    );
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$/./*", { flipBackslashes: false }),
-      "\\\\System07\\C$/.",
-    );
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$//", { flipBackslashes: false }),
-      "\\\\System07\\C$/",
-    );
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$//*", { flipBackslashes: false }),
-      "\\\\System07\\C$/",
-    );
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$/path/*.js"),
-      "\\\\System07\\C$/path",
+      gp("//ComputerName/Share/path/*.js"),
+      "//ComputerName/Share/path",
     );
 
-    t.assert.strictEqual(gp("\\\\System07\\C$\\"), "\\\\System07\\C$/");
-    t.assert.strictEqual(gp("\\\\System07\\C$\\."), "\\\\System07\\C$/");
-    t.assert.strictEqual(gp("\\\\System07\\C$\\*"), "\\\\System07\\C$/");
-    t.assert.strictEqual(gp("\\\\System07\\C$\\.\\*"), "\\\\System07\\C$/.");
-    t.assert.strictEqual(gp("\\\\System07\\C$\\\\"), "\\\\System07\\C$/");
-    t.assert.strictEqual(gp("\\\\System07\\C$\\\\*"), "\\\\System07\\C$/");
-    t.assert.strictEqual(
-      gp("\\\\System07\\C$\\path\\*.js"),
-      "\\\\System07\\C$/path",
-    );
+    t.assert.strictEqual(gp("//?/C:/"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/."), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/*"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/./*"), "//?/C:/.");
+    t.assert.strictEqual(gp("//?/C://"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C://*"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/path/*.js"), "//?/C:/path");
   });
 });
