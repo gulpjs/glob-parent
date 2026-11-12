@@ -252,16 +252,26 @@ describe("glob-parent", function () {
       assert.deepStrictEqual(gp("aaa\\}"), "aaa");
       assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
       assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
-      // assert.deepStrictEqual(gp("{\\{aaa/bbb}"), ".");
-      // assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      // Note: The escape would be flipped as the `/` separator
+      assert.deepStrictEqual(gp("{\\{aaa/bbb}"), "{");
+      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}"), ".");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      // Note: The escape would be flipped as the `/` separator
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}"), "ccc/{");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}"), "ccc");
       assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}"), "ccc\\/{{aaa");
 
       var opts = { flipBackslashes: false };
       assert.deepStrictEqual(gp("aaa\\}", opts), ".");
       assert.deepStrictEqual(gp("\\{aaa/bbb\\}", opts), "{aaa");
       assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}", opts), "{{aaa");
-      // assert.deepStrictEqual(gp("{\\{aaa/bbb}", opts), ".");
-      // assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      assert.deepStrictEqual(gp("{\\{aaa/bbb}", opts), "{\\{aaa/bbb}");
+      assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}", opts), ".");
+      // Before minimatch, a pattern that matched exactly one item was still determined as magic
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc/{\\{aaa/bbb}");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}", opts), "ccc/");
       assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}", opts), "ccc\\/{{aaa");
     } else {
       assert.deepStrictEqual(gp("aaa\\}"), ".");
