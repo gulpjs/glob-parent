@@ -219,6 +219,10 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("path/foo/bar.js"), "path/foo");
   });
 
+  it("should not auto flip backslashes", function () {
+    assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
+  });
+
   it("should remove tail '.' and './'", function () {
     assert.deepStrictEqual(gp("foo/./*"), "foo/");
     assert.deepStrictEqual(gp("foo/./././*"), "foo/");
