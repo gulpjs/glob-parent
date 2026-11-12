@@ -34,9 +34,9 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("{a,b}"), ".");
     assert.deepStrictEqual(gp("/{a,b}"), "/");
     assert.deepStrictEqual(gp("/{a,b}/"), "/");
-    // assert.deepStrictEqual(gp("(a|b)"), ".");
-    // assert.deepStrictEqual(gp("/(a|b)"), "/");
-    // assert.deepStrictEqual(gp("./(a|b)"), ".");
+    assert.deepStrictEqual(gp("(a|b)"), ".");
+    assert.deepStrictEqual(gp("/(a|b)"), "/");
+    assert.deepStrictEqual(gp("./(a|b)"), ".");
     assert.deepStrictEqual(gp("a/(b c)"), "a"); // not an extglob
     assert.deepStrictEqual(gp("a/(b c)/"), "a/(b c)"); // not an extglob
     assert.deepStrictEqual(gp("a/(b c)/d"), "a/(b c)"); // not an extglob
