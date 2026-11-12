@@ -4,10 +4,8 @@ const os = require("node:os");
 const path = require("node:path");
 
 const { Minimatch } = require("minimatch");
-const isWin32 = os.platform() === "win32";
 
 const slash = "/";
-const backslash = /\\/g;
 
 /**
  * @param {string} str

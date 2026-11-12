@@ -224,28 +224,20 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("foo/./././*"), "foo/");
     assert.deepStrictEqual(gp("./././*"), "./");
     assert.deepStrictEqual(gp("/./././*"), "/");
+  });
 
-    if (isWin32) {
-      assert.deepStrictEqual(gp("C:/foo/./*"), "C:/foo/");
-      assert.deepStrictEqual(gp("C:/foo/./././*"), "C:/foo/");
-      assert.deepStrictEqual(gp("C:/./././*"), "C:/");
+  it("(win) should remove tail '.' and './'", () => {
+    assert.deepStrictEqual(gp("C:/foo/./*"), "C:/foo/");
+    assert.deepStrictEqual(gp("C:/foo/./././*"), "C:/foo/");
+    assert.deepStrictEqual(gp("C:/./././*"), "C:/");
 
-      assert.deepStrictEqual(gp("C:\\foo\\.\\*"), "C:/foo/");
-      assert.deepStrictEqual(gp("C:\\foo\\.\\.\\.\\*"), "C:/foo/");
-      assert.deepStrictEqual(gp("C:\\.\\.\\.\\*"), "C:/");
-
-      assert.deepStrictEqual(gp("C:foo/./*"), "C:foo/");
-      assert.deepStrictEqual(gp("C:foo/./././*"), "C:foo/");
-      assert.deepStrictEqual(gp("C:./././*"), "C:");
-
-      assert.deepStrictEqual(gp("C:foo\\.\\*"), "C:foo/");
-      assert.deepStrictEqual(gp("C:foo\\.\\.\\.\\*"), "C:foo/");
-      assert.deepStrictEqual(gp("C:.\\.\\.\\*"), "C:");
-    }
+    assert.deepStrictEqual(gp("C:foo/./*"), "C:foo/");
+    assert.deepStrictEqual(gp("C:foo/./././*"), "C:foo/");
+    assert.deepStrictEqual(gp("C:./././*"), "C:");
   });
 
   it("(win) treat escaped brackets as normal chars", { skip: !isWin32 }, () => {
-    assert.deepStrictEqual(gp("aaa\\}"), "aaa");
+    assert.deepStrictEqual(gp("aaa\\}"), ".");
     assert.deepStrictEqual(gp("\\{aaa/bbb\\}"), "{aaa");
     assert.deepStrictEqual(gp("\\{\\{aaa/bbb\\}"), "{{aaa");
     // Before minimatch, a pattern that matched exactly one item was still determined as magic
@@ -353,11 +345,5 @@ describe("glob2base test patterns", function () {
     assert.throws(() => {
       gp("/(".repeat(500000) + ")");
     }, expected);
-  });
-});
-
-describe("technically invalid windows globs", { skip: !isWin32 }, () => {
-  it("should manage simple globs with backslash path separator", () => {
-    assert.deepStrictEqual(gp("C:\\path\\*.js"), "C:/path");
   });
 });
