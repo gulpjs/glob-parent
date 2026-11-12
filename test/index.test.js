@@ -14,7 +14,7 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("/.*/"), "/");
     assert.deepStrictEqual(gp("//"), "/");
     // TODO: Something to do with UNC
-    // assert.deepStrictEqual(gp("//*"), "/");
+    assert.deepStrictEqual(gp("//*"), "/");
     assert.deepStrictEqual(gp(".//"), ".");
     assert.deepStrictEqual(gp(".//*"), ".");
     assert.deepStrictEqual(gp("a/.*/b"), "a");
