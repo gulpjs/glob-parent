@@ -134,18 +134,11 @@ describe("glob-parent", function () {
     // Before minimatch, this escape was not respected
     assert.deepStrictEqual(gp("{foo,bar\\}/"), "{foo,bar}");
 
-    if (isWin32) {
-      // On Windows we are trying to flip backslashes foo-\\[ → foo-/[
-      // Before minimatch, an invalid extglob was accepted, but the
-      // proper definition should contain brackets
-      assert.deepStrictEqual(gp("foo-\\[bar].md"), "foo-");
-    } else {
-      assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
-      assert.deepStrictEqual(gp("\\[bar]"), ".");
-      assert.deepStrictEqual(gp("[bar\\]"), ".");
-      assert.deepStrictEqual(gp("\\{foo,bar\\}"), ".");
-      assert.deepStrictEqual(gp("{foo,bar\\}"), ".");
-    }
+    assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
+    assert.deepStrictEqual(gp("\\[bar]"), ".");
+    assert.deepStrictEqual(gp("[bar\\]"), ".");
+    assert.deepStrictEqual(gp("\\{foo,bar\\}"), ".");
+    assert.deepStrictEqual(gp("{foo,bar\\}"), ".");
   });
 
   it("should respect glob enclosures with embedded separators", function () {
@@ -217,10 +210,6 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("path/foo"), "path");
     assert.deepStrictEqual(gp("path/foo/"), "path/foo");
     assert.deepStrictEqual(gp("path/foo/bar.js"), "path/foo");
-  });
-
-  it("should not auto flip backslashes", function () {
-    assert.deepStrictEqual(gp("foo-\\(bar\\).md"), ".");
   });
 
   it("should remove tail '.' and './'", function () {
