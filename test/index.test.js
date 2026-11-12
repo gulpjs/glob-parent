@@ -306,7 +306,7 @@ describe("glob2base test patterns", () => {
     );
   });
 
-  it("should not be susceptible to SNYK-JS-GLOBPARENT-1016905", (t) => {
+  it("should not be susceptible to SNYK-JS-GLOBPARENT-1016905", { timeout: 1 }, () => {
     // This will time out if susceptible.
     gp("{" + "/".repeat(5000));
   });
