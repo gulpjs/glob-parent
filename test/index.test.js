@@ -13,8 +13,12 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("/.*"), "/");
     assert.deepStrictEqual(gp("/.*/"), "/");
     assert.deepStrictEqual(gp("//"), "/");
-    // TODO: Something to do with UNC
-    assert.deepStrictEqual(gp("//*"), "/");
+    if (isWin32) {
+      // Before minimatch, UNC globs weren't properly respected on Windows
+      assert.deepStrictEqual(gp("//*"), "//");
+    } else {
+      assert.deepStrictEqual(gp("//*"), "/");
+    }
     assert.deepStrictEqual(gp(".//"), ".");
     assert.deepStrictEqual(gp(".//*"), ".");
     assert.deepStrictEqual(gp("a/.*/b"), "a");
