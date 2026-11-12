@@ -11,14 +11,10 @@ const backslash = /\\/g;
 
 /**
  * @param {string} str
- * @param {Object} opts
- * @param {boolean} [opts.flipBackslashes=true]
  */
-module.exports = function globParent(str, opts) {
-  const options = Object.assign({ flipBackslashes: true }, opts);
-
+module.exports = function globParent(str) {
   // flip windows path separators
-  if (options.flipBackslashes && isWin32 && !str.includes(slash)) {
+  if (isWin32 && !str.includes(slash)) {
     str = str.replace(backslash, slash);
   }
 
