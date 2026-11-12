@@ -274,8 +274,8 @@ describe("glob-parent", function () {
       assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}", opts), ".");
       assert.deepStrictEqual(gp("{\\{aaa/bbb,ccc}/", opts), ".");
       // Before minimatch, a pattern that matched exactly one item was still determined as magic
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc/{\\{aaa");
-      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/", opts), "ccc/{\\{aaa/bbb}");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}", opts), "ccc/{{aaa");
+      assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb}/", opts), "ccc/{{aaa/bbb}");
       assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}", opts), "ccc/");
       assert.deepStrictEqual(gp("ccc/{\\{aaa/bbb,ccc}/", opts), "ccc/");
       assert.deepStrictEqual(gp("ccc\\/\\{\\{aaa/bbb}", opts), "ccc\\/{{aaa");
