@@ -13,12 +13,7 @@ describe("glob-parent", function () {
     assert.deepStrictEqual(gp("/.*"), "/");
     assert.deepStrictEqual(gp("/.*/"), "/");
     assert.deepStrictEqual(gp("//"), "/");
-    if (isWin32) {
-      // Before minimatch, UNC globs weren't properly respected on Windows
-      assert.deepStrictEqual(gp("//*"), "//");
-    } else {
-      assert.deepStrictEqual(gp("//*"), "/");
-    }
+    assert.deepStrictEqual(gp("//*"), "/");
     assert.deepStrictEqual(gp(".//"), ".");
     assert.deepStrictEqual(gp(".//*"), ".");
     assert.deepStrictEqual(gp("a/.*/b"), "a");
@@ -338,5 +333,54 @@ describe("glob2base test patterns", function () {
     assert.throws(() => {
       gp("/(".repeat(500000) + ")");
     }, expected);
+  });
+});
+
+describe("windows path with drive or UNC volume", { skip: !isWin32 }, () => {
+  it("should return parent dirname from absolute path with drive letter", (t) => {
+    t.assert.strictEqual(gp("C:/"), "C:/");
+    t.assert.strictEqual(gp("C:/."), "C:/");
+    t.assert.strictEqual(gp("C:/*"), "C:/");
+    t.assert.strictEqual(gp("C:/./*"), "C:/");
+    t.assert.strictEqual(gp("C://"), "C:/");
+    t.assert.strictEqual(gp("C://*"), "C:/");
+    t.assert.strictEqual(gp("C:/path/*.js"), "C:/path");
+  });
+
+  it("should return parent dirname from relative path with drive letter", (t) => {
+    t.assert.strictEqual(gp("C:"), "C:");
+    t.assert.strictEqual(gp("C:."), "C:");
+    t.assert.strictEqual(gp("C:*"), ".");
+    t.assert.strictEqual(gp("C:./*"), "C:");
+    t.assert.strictEqual(gp("C:.//"), "C:");
+    t.assert.strictEqual(gp("C:.//*"), "C:");
+    t.assert.strictEqual(gp("C:path/*.js"), "C:path");
+  });
+
+  it("should return parent dirname from UNC path", (t) => {
+    t.assert.strictEqual(gp("//ComputerName/Share/"), "//ComputerName/Share/");
+    t.assert.strictEqual(gp("//ComputerName/Share/."), "//ComputerName/Share/");
+    t.assert.strictEqual(gp("//ComputerName/Share/*"), "//ComputerName/Share/");
+    t.assert.strictEqual(
+      gp("//ComputerName/Share/./*"),
+      "//ComputerName/Share/",
+    );
+    t.assert.strictEqual(gp("//ComputerName/Share//"), "//ComputerName/Share/");
+    t.assert.strictEqual(
+      gp("//ComputerName/Share//*"),
+      "//ComputerName/Share/",
+    );
+    t.assert.strictEqual(
+      gp("//ComputerName/Share/path/*.js"),
+      "//ComputerName/Share/path",
+    );
+
+    t.assert.strictEqual(gp("//?/C:/"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/."), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/*"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/./*"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C://"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C://*"), "//?/C:/");
+    t.assert.strictEqual(gp("//?/C:/path/*.js"), "//?/C:/path");
   });
 });
