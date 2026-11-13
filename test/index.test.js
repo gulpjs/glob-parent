@@ -382,3 +382,58 @@ describe("windows path with drive or UNC volume", { skip: !isWin32 }, () => {
     t.assert.strictEqual(gp("//?/C:/path/*.js"), "//?/C:/path");
   });
 });
+
+describe("options", () => {
+  it("ignores non-object options", (t) => {
+    t.assert.doesNotThrow(() => gp("/", 1234));
+  });
+
+  it("resolves `cwd` option for relative parents", (t) => {
+    t.assert.strictEqual(gp("foo/bar/*js", { cwd: "/" }), "/foo/bar");
+  });
+
+  it("does not resolve relative parents if `cwd` not specified", (t) => {
+    t.assert.strictEqual(gp("foo/bar/*js"), "foo/bar");
+  });
+
+  it("does not resolve `cwd` option against absolute parents", (t) => {
+    t.assert.strictEqual(gp("/foo/bar/*js", { cwd: "/baz" }), "/foo/bar");
+  });
+
+  it("supports `cwd` with trailing slash", (t) => {
+    t.assert.strictEqual(gp("foo/bar/*js", { cwd: "/baz/" }), "/baz/foo/bar");
+  });
+
+  it("collapses trailing slashes in `cwd`", (t) => {
+    t.assert.strictEqual(
+      gp("foo/bar/*js", { cwd: "/baz////" }),
+      "/baz/foo/bar",
+    );
+  });
+
+  it("collapses trailing `./` in `cwd`", (t) => {
+    t.assert.strictEqual(
+      gp("foo/bar/*js", { cwd: "/baz/./././" }),
+      "/baz/foo/bar",
+    );
+  });
+
+  it("collapses trailing `../` in `cwd`", (t) => {
+    t.assert.strictEqual(gp("foo/bar/*js", { cwd: "/baz/../" }), "/foo/bar");
+  });
+
+  it("(win) flips \\ separator in `cwd` option", { skip: !isWin32 }, (t) => {
+    t.assert.strictEqual(gp("foo/bar/*js", { cwd: "C:\\" }), "C:/foo/bar");
+  });
+
+  it(
+    "(win) does not flip \\ in `cwd` option if already includes slash",
+    { skip: !isWin32 },
+    (t) => {
+      t.assert.strictEqual(
+        gp("foo/bar/*js", { cwd: "C:/\\(baz)" }),
+        "C:/\\(baz)/foo/bar",
+      );
+    },
+  );
+});
