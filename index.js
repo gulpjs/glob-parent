@@ -1,15 +1,13 @@
-"use strict";
+import path from "node:path";
 
-const path = require("node:path");
-
-const { Minimatch } = require("minimatch");
+import { Minimatch } from "minimatch";
 
 const slash = "/";
 
 /**
  * @param {string} str
  */
-module.exports = function globParent(str) {
+export default function globParent(str) {
   const mm = new Minimatch(str, { optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
@@ -68,4 +66,4 @@ module.exports = function globParent(str) {
   }
 
   return matchedStr;
-};
+}

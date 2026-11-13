@@ -1,9 +1,7 @@
-"use strict";
+import os from "node:os";
+import { describe, it } from "node:test";
 
-const os = require("node:os");
-const { describe, it } = require("node:test");
-
-const gp = require("../");
+import gp from "../index.js";
 
 const isWin32 = os.platform() === "win32";
 
