@@ -1,13 +1,18 @@
+import os from "node:os";
 import path from "node:path";
 
 import { Minimatch } from "minimatch";
 
 const slash = "/";
+const backslash = /\\/g;
+const isWin32 = os.platform() === "win32";
 
 /**
  * @param {string} str
  */
-export default function globParent(str) {
+export default function globParent(str, opts) {
+  let { cwd } = Object.assign({}, opts);
+
   const mm = new Minimatch(str, { optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
@@ -63,6 +68,15 @@ export default function globParent(str) {
   // remove last './' if only remaining is drive letter
   if (matchedStr.endsWith(":./")) {
     matchedStr = matchedStr.slice(0, -2);
+  }
+
+  if (cwd && !path.isAbsolute(matchedStr)) {
+    // flip windows path separators
+    if (isWin32 && !cwd.includes(slash)) {
+      cwd = cwd.replace(backslash, slash);
+    }
+
+    return path.posix.join(cwd, matchedStr);
   }
 
   return matchedStr;
