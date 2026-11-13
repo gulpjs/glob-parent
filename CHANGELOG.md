@@ -4,6 +4,38 @@
 
 - eliminate ReDoS ([#36](https://github.com/gulpjs/glob-parent/issues/36)) ([f923116](https://github.com/gulpjs/glob-parent/commit/f9231168b0041fea3f8f954b3cceb56269fc6366))
 
+## [7.0.0](https://github.com/gulpjs/glob-parent/compare/v6.0.2...v7.0.0) (2026-11-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Convert to ESM ([#85](https://github.com/gulpjs/glob-parent/issues/85))
+* Remove `flipBackslashes` option
+* Stop flipping Windows-style path separators ([#82](https://github.com/gulpjs/glob-parent/issues/82))
+* Leverage minimatch for glob comparison ([#77](https://github.com/gulpjs/glob-parent/issues/77))
+* Treat escaped enclosures as normal characters ([#76](https://github.com/gulpjs/glob-parent/issues/76))
+* Collapse trailing `.` and `./` ([#75](https://github.com/gulpjs/glob-parent/issues/75))
+* Normalize repository, dropping Node <22.15.0 ([#70](https://github.com/gulpjs/glob-parent/issues/70))
+
+### Features
+
+* Collapse trailing `.` and `./` ([#75](https://github.com/gulpjs/glob-parent/issues/75)) ([ef05e8d](https://github.com/gulpjs/glob-parent/commit/ef05e8d903ef34760ab690b9b004d2ca002bef15))
+* Convert to ESM ([#85](https://github.com/gulpjs/glob-parent/issues/85)) ([135c3af](https://github.com/gulpjs/glob-parent/commit/135c3af0874aca72724b1456c5f89caa67cf4a63))
+* Leverage minimatch for glob comparison ([#77](https://github.com/gulpjs/glob-parent/issues/77)) ([cf5c096](https://github.com/gulpjs/glob-parent/commit/cf5c0966149fcbf62f6d8d27633e493b34d3cac0))
+* Stop flipping Windows-style path separators ([#82](https://github.com/gulpjs/glob-parent/issues/82)) ([7081d11](https://github.com/gulpjs/glob-parent/commit/7081d11f66547048c113686ddb0e5110b0cb3d45))
+
+
+### Bug Fixes
+
+* Support Windows UNC globs ([#79](https://github.com/gulpjs/glob-parent/issues/79)) ([2af9a2e](https://github.com/gulpjs/glob-parent/commit/2af9a2ef336a1de04941629641a9f909c9e57be6))
+* Treat escaped enclosures as normal characters ([#76](https://github.com/gulpjs/glob-parent/issues/76)) ([e6aecfc](https://github.com/gulpjs/glob-parent/commit/e6aecfc257ba6d1bd863b7e1066cf7aa3adc4b0b))
+
+
+### Miscellaneous Chores
+
+* Normalize repository, dropping Node &lt;22.15.0 ([#70](https://github.com/gulpjs/glob-parent/issues/70)) ([bef1409](https://github.com/gulpjs/glob-parent/commit/bef14096cb08e845ee6e74609de6727be18c42bc))
+* Remove `flipBackslashes` option ([7081d11](https://github.com/gulpjs/glob-parent/commit/7081d11f66547048c113686ddb0e5110b0cb3d45))
+
 ### [6.0.2](https://www.github.com/gulpjs/glob-parent/compare/v6.0.1...v6.0.2) (2021-09-29)
 
 ### Bug Fixes
