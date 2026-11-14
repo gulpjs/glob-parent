@@ -5,10 +5,13 @@ import { Minimatch } from "minimatch";
 const slash = "/";
 
 /**
- * @param {string} str
+ * Extracts the non-magic parent path from a glob string.
+ *
+ * @param {string} glob The glob string.
+ * @returns The non-magic portion of the provided glob string.
  */
-export default function globParent(str) {
-  const mm = new Minimatch(str, { optimizationLevel: 0 });
+export default function globParent(glob) {
+  const mm = new Minimatch(glob, { optimizationLevel: 0 });
 
   const longest = Math.max(...mm.set.map((segments) => segments.length));
   const segmentSets = Array.from({ length: longest }, () => new Set());
